@@ -1,0 +1,21 @@
+<!-- header.html -->
+<nav class="flex justify-between items-center p-6 border-b border-zinc-800 backdrop-blur-md sticky top-0 z-50 bg-black/80">
+  <!-- Logo -->
+  <div class="text-2xl font-premium font-bold text-gold tracking-widest z-50">HAIR MAGICIAN</div>
+  
+  <!-- Hamburger Button -->
+  <button id="menuToggle" class="text-gold focus:outline-none md:hidden z-50" aria-label="Toggle Menu">
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path id="menuIcon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+    </svg>
+  </button>
+
+  <!-- Links Wrapper -->
+  <!-- Default mobile par: hidden (hum toggle se handle karenge), absolute placement, black display overlay -->
+  <!-- md: breakpoint par: horizontal inline flex layout aur static position -->
+  <div id="navLinks" class="hidden fixed inset-0 bg-zinc-950 w-full h-screen flex-col items-center justify-center space-y-8 text-xl tracking-wider uppercase z-40 md:static md:flex md:flex-row md:h-auto md:w-auto md:space-y-0 md:space-x-8 md:text-sm md:bg-transparent">
+    <a href="index.html" class="text-zinc-300 hover:text-gold transition duration-300">Home</a>
+    <a href="service.html" class="text-zinc-300 hover:text-gold transition duration-300">Services</a>
+    <a href="contact.html" class="bg-gold-gradient text-black px-8 py-3 md:px-4 md:py-2 font-bold hover:scale-105 transition transform rounded-sm text-center text-sm md:text-xs">Book Appointment</a>
+  </div>
+</nav>

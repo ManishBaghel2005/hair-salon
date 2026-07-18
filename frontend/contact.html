@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book Your Slot - Hair Magician</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/socket.io-client@4.7.5/dist/socket.io.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;500&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Montserrat', sans-serif; background-color: #0F0F0F; color: #FAF9F6; }
+    .font-premium { font-family: 'Cinzel', serif; }
+    .text-gold { color: #D4AF37; }
+    .bg-gold-gradient { background: linear-gradient(135deg, #BF953F 0%, #FCF6BA 25%, #B38728 50%, #FBF5B7 75%, #AA771C 100%); }
+    
+    /* Custom Calendar Utility Classes */
+    .cal-day { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; border-radius: 4px; font-size: 0.875rem; transition: all 0.2s; }
+    .day-past { color: #52525b; background-color: rgba(39, 39, 42, 0.4); cursor: not-allowed; text-decoration: line-through; }
+    .day-available { color: #faf9f6; cursor: pointer; }
+    .day-available:hover { border: 1px solid #D4AF37; }
+    .day-today { border: 2px solid #ef4444; font-weight: bold; }
+    .day-selected { background: linear-gradient(135deg, #BF953F 0%, #B38728 100%) !important; color: black !important; font-weight: bold; }
+    .slot-booked { background-color: #ef4444 !important; opacity: 0.5; cursor: not-allowed; }
+  </style>
+</head>
+<body class="p-6 md:p-12">
+
+  <div class="max-w-7xl mx-auto">
+    <a href="index.html" class="text-gold tracking-widest text-sm hover:underline">← Back to Home</a>
+    <h1 class="text-4xl font-premium text-gold text-center my-10 tracking-widest">Reserve Your Magical Experience</h1>
+
+    <!-- 2 Column Master Layout -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+      
+      <!-- LEFT COLUMN: Custom Calendar & Time Slots -->
+      <div class="bg-zinc-950 border border-zinc-800 p-6 rounded-sm space-y-8 shadow-xl">
+        
+        <!-- Premium Inline Calendar Component -->
+        <div>
+          <div class="flex justify-between items-center mb-6">
+            <h2 id="currentMonthYear" class="text-xl font-premium text-gold tracking-wider">July 2026</h2>
+            <div class="flex space-x-2">
+              <button id="prevMonth" class="px-3 py-1 bg-zinc-900 border border-zinc-700 rounded text-zinc-400 hover:text-gold">&lt;</button>
+              <button id="nextMonth" class="px-3 py-1 bg-zinc-900 border border-zinc-700 rounded text-zinc-400 hover:text-gold">&gt;</button>
+            </div>
+          </div>
+
+          <!-- Weekdays Row -->
+          <div class="grid grid-cols-7 gap-2 text-center text-xs font-bold text-zinc-500 mb-2">
+            <div>SU</div><div>MO</div><div>TU</div><div>WE</div><div>TH</div><div>FR</div><div>SA</div>
+          </div>
+
+          <!-- Days Dynamic Grid -->
+          <div id="calendarDaysGrid" class="grid grid-cols-7 gap-2">
+            <!-- Dynamically populated by JS -->
+          </div>
+
+          <!-- Status Indicators List -->
+          <div class="flex flex-wrap gap-4 text-xs text-zinc-400 mt-6 border-t border-zinc-900 pt-4">
+            <div class="flex items-center space-x-1"><span class="w-3 h-3 bg-zinc-800 border border-zinc-700 rounded-sm"></span> <span>Available</span></div>
+            <div class="flex items-center space-x-1"><span class="w-3 h-3 border-2 border-red-500 rounded-sm"></span> <span>Today</span></div>
+            <div class="flex items-center space-x-1"><span class="w-3 h-3 bg-gold-gradient rounded-sm"></span> <span>Selected</span></div>
+            <div class="flex items-center space-x-1"><span class="w-3 h-3 bg-zinc-900 opacity-40 rounded-sm line-through"></span> <span>Past (Unavailable)</span></div>
+          </div>
+        </div>
+
+        <!-- Dynamic Time Slots Container -->
+        <div>
+          <h3 class="text-md font-premium text-gold mb-3">Select Available Time Slot</h3>
+          <div id="slotsContainer" class="grid grid-cols-2 gap-3">
+            <p class="text-zinc-500 text-xs italic col-span-2">Please select a date from the calendar to see slots.</p>
+          </div>
+        </div>
+
+        <!-- Feature Information Points Box -->
+        <div class="border-t border-zinc-800 pt-6 space-y-3 text-sm text-zinc-400">
+          <div class="flex items-center space-x-3">
+            <span class="text-gold text-lg">🕒</span>
+            <p>1-hour premium personalized styling - no rush session</p>
+          </div>
+          <div class="flex items-center space-x-3">
+            <span class="text-gold text-lg">✨</span>
+            <p>100% Satisfaction Guarantee - customize your look on the go</p>
+          </div>
+          <div class="flex items-center space-x-3">
+            <span class="text-gold text-lg">👑</span>
+            <p>Complimentary luxury hair wash & beverage included</p>
+          </div>
+          <div class="flex items-center space-x-3">
+            <span class="text-gold text-lg">📍</span>
+            <p>Premium Studio Location (Delhi/NCR) - VIP Private Rooms available</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT COLUMN: Booking Details Form -->
+      <div class="bg-zinc-950 border border-zinc-800 p-6 md:p-8 rounded-sm shadow-xl">
+        <h2 class="text-xl font-premium text-gold mb-6">Enter Booking Information</h2>
+        
+        <form id="bookingForm" class="space-y-5">
+          <div>
+            <label class="block text-zinc-400 text-xs uppercase tracking-widest mb-2">Selected Date & Slot</label>
+            <input type="text" id="displaySelectedDetails" readOnly placeholder="No date selected yet" 
+                   class="w-full bg-zinc-900 border border-zinc-800 rounded p-3 text-gold font-bold text-sm outline-none">
+          </div>
+          <div>
+            <label class="block text-zinc-400 text-xs uppercase tracking-widest mb-2">Full Name *</label>
+            <input type="text" id="userName" required placeholder="Enter full name" 
+                   class="w-full bg-zinc-900 border border-zinc-700 rounded p-3 text-white focus:border-gold outline-none text-sm">
+          </div>
+          <div>
+            <label class="block text-zinc-400 text-xs uppercase tracking-widest mb-2">Phone Number *</label>
+            <input type="tel" id="userPhone" required placeholder="98765 43210" 
+                   class="w-full bg-zinc-900 border border-zinc-700 rounded p-3 text-white focus:border-gold outline-none text-sm">
+          </div>
+          <div>
+            <label class="block text-zinc-400 text-xs uppercase tracking-widest mb-2">Email Address *</label>
+            <input type="email" id="userEmail" required placeholder="you@email.com" 
+                   class="w-full bg-zinc-900 border border-zinc-700 rounded p-3 text-white focus:border-gold outline-none text-sm">
+          </div>
+          <div>
+            <label class="block text-zinc-400 text-xs uppercase tracking-widest mb-2">Select Service *</label>
+            <select id="userService" required class="w-full bg-zinc-900 border border-zinc-700 rounded p-3 text-white focus:border-gold outline-none text-sm">
+              <option value="Hair Wizardry">Hair Wizardry (Styling & Magic Color)</option>
+              <option value="Luxury Grooming">Luxury Grooming & Spa Treatments</option>
+              <option value="Unisex Complete Combo">Unisex Luxury Makeover Combo</option>
+            </select>
+          </div>
+
+          <button type="submit" class="w-full bg-gold-gradient text-black font-bold uppercase tracking-widest py-4 rounded-sm transition transform hover:scale-[1.01] text-sm mt-4 shadow-lg">
+            Confirm Booking Experience
+          </button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Real-time Alerts Popup Container -->
+  <div id="notificationToast" class="fixed bottom-5 right-5 bg-zinc-900 border border-gold text-white px-6 py-4 rounded shadow-2xl hidden z-50 transition-all duration-300">
+    <p class="text-gold font-bold font-premium">Real-time Alert!</p>
+    <p id="toastMessage" class="text-sm font-light mt-1"></p>
+  </div>
+
+  <!-- 🌟 ADDED: Premium Confirmation Modal Layer -->
+  <div id="successModal" class="fixed inset-0 bg-black/80 flex items-center justify-center hidden z-50 p-4">
+    <div class="bg-zinc-950 border-2 border-[#D4AF37] p-8 rounded-sm max-w-md w-full text-center shadow-2xl relative animate-fade-in">
+      <div class="text-4xl mb-4">✨</div>
+      <h3 class="text-2xl font-premium text-gold tracking-widest mb-3">Booking Confirmed!</h3>
+      <p class="text-zinc-400 text-sm font-light leading-relaxed mb-6">
+       Your appointment has been successfully confirmed! A confirmation email containing all the details has been sent to your registered email address.
+      </p>
+      <button id="closeModalBtn" type="button" class="w-full bg-gold-gradient text-black font-bold uppercase tracking-widest py-3 rounded-sm text-xs hover:scale-[1.01] transition transform shadow-md outline-none">
+        OK
+      </button>
+    </div>
+  </div>
+
+  <!-- Scripts Sequence Binding -->
+  <script src="config.js"></script>
+  <script src="booke.js"></script>
+</body>
+</html>
