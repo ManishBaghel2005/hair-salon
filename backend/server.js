@@ -11,12 +11,14 @@ const app = express();
 const server = http.createServer(app);
 
 // Sockets aur HTTP dono ke liye live frontend URL allow karna hoga
+// 🚨 Dhyan rakhein: Yahan '/service' path hata kar sirf base domain rakha hai
 const allowedOrigins = [
-  'http://localhost:5500', // Local testing ke liye
+  'http://localhost:5500', 
   'http://127.0.0.1:5500',
-  'https://hair-magic-salon.netlify.app/service' // 🚨 YAHAN APNA NETLIFY DOCK URL DAALEIN
+  'https://hair-magic-salon.netlify.app' 
 ];
 
+// Express HTTP CORS setup
 app.use(cors({
   origin: allowedOrigins,
   credentials: true
@@ -24,10 +26,11 @@ app.use(cors({
 
 app.use(express.json());
 
+// Socket.io CORS setup
 const io = new Server(server, {
   cors: { 
     origin: allowedOrigins,
-    methods: ["GET", "POST"],
+    methods: ["GET", "POST", "PUT", "DELETE"], // Better for all API calls
     credentials: true
   }
 });
