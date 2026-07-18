@@ -14,7 +14,7 @@ const server = http.createServer(app);
 const allowedOrigins = [
   'http://localhost:5500', // Local testing ke liye
   'http://127.0.0.1:5500',
-  'https://your-frontend-site.netlify.app' // 🚨 YAHAN APNA NETLIFY DOCK URL DAALEIN
+  'https://hair-magic-salon.netlify.app/service' // 🚨 YAHAN APNA NETLIFY DOCK URL DAALEIN
 ];
 
 app.use(cors({
