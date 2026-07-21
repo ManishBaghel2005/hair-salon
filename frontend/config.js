@@ -1,7 +1,7 @@
 // config.js
 
 // 🚨 YAHAN APNE RENDER/RAILWAY BACKEND KA LIVE URL DAALNA DEPLOYMENT KE BAAD
-const BACKEND_LIVE_URL = 'https://hair-salon-h9cx.onrender.com'; 
+const BACKEND_LIVE_URL = 'https://hair-salon-1-37e6.onrender.com'; 
 
 const DEFAULT_API_BASE_URL = `${BACKEND_LIVE_URL}/api/appointments`;
 const DEFAULT_SOCKET_URL = BACKEND_LIVE_URL;
