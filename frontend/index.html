@@ -3,18 +3,27 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hair Magician Unisex Salon</title>
+  <title>Hair Magician Unisex Salon | Luxury Styling in Delhi</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Scroll Animation Library -->
   <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
   <!-- Google Fonts for Premium Look -->
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400;500;700&display=swap" rel="stylesheet">
   <style>
-    body { font-family: 'Montserrat', sans-serif; background-color: #0F0F0F; color: #FAF9F6; }
+    body { font-family: 'Montserrat', sans-serif; background-color: #0F0F0F; color: #FAF9F6; scroll-behavior: smooth; }
     .font-premium { font-family: 'Cinzel', serif; }
     .text-gold { color: #D4AF37; }
+    .border-gold { border-color: #D4AF37; }
     .bg-gold-gradient { background: linear-gradient(135deg, #BF953F 0%, #FCF6BA 25%, #B38728 50%, #FBF5B7 75%, #AA771C 100%); }
     
+    /* Premium Smooth Transition Utilities */
+    .premium-transition { transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1); }
+    
+    /* Interactive Navigation Link Underline Effects */
+    .nav-link-effect { position: relative; }
+    .nav-link-effect::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 1px; background-color: #D4AF37; transition: width 0.3s ease; }
+    .nav-link-effect:hover::after { width: 100%; }
+
     /* Instagram Iframe Responsive Styling */
     .instagram-wrapper iframe {
       width: 100% !important;
@@ -22,215 +31,797 @@
       border: none !important;
       border-radius: 8px !important;
     }
+
+    /* Custom Calendar Styling */
+    .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; text-align: center; }
+    .calendar-day { padding: 10px 0; border-radius: 4px; font-size: 12px; cursor: pointer; border: 1px solid transparent; transition: all 0.3s; }
+    .calendar-day.empty { cursor: default; }
+    .calendar-day.past { color: #52525b; cursor: not-allowed; text-decoration: line-through; }
+    .calendar-day.available:hover { border-color: #D4AF37; background-color: rgba(212, 175, 55, 0.1); }
+    .calendar-day.selected { background-color: #D4AF37; color: #000; font-weight: bold; transform: scale(1.05); }
+    .calendar-day.today { border: 1px dashed #D4AF37; }
+    
+    /* Timeslot Styling */
+    .timeslot-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 20px; }
+    .timeslot { padding: 10px; border: 1px solid #3f3f46; border-radius: 4px; text-align: center; font-size: 12px; cursor: pointer; transition: all 0.3s; color: #a1a1aa; }
+    .timeslot.available:hover { border-color: #D4AF37; color: #fff; background-color: rgba(212, 175, 55, 0.1); }
+    .timeslot.selected { background-color: #D4AF37; color: #000; border-color: #D4AF37; font-weight: bold; }
+    .timeslot.booked { background-color: rgba(220, 38, 38, 0.1); color: #ef4444; text-decoration: line-through; cursor: not-allowed; border-color: rgba(220, 38, 38, 0.3); }
+
+    /* Floating Action Buttons */
+    .fab-container { position: fixed; bottom: 20px; right: 20px; z-index: 100; display: flex; flex-direction: column; gap: 12px; align-items: center; }
+    .fab-btn { width: 50px; height: 50px; border-radius: 50%; display: flex; justify-content: center; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.4); transition: transform 0.3s, box-shadow 0.3s; cursor: pointer; text-decoration: none; }
+    .fab-btn:hover { transform: scale(1.1); box-shadow: 0 6px 20px rgba(0,0,0,0.6); }
+    .fab-instagram { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); color: white; font-size: 24px; }
+    .fab-whatsapp { background-color: #25D366; color: white; font-size: 24px; }
+    .fab-call { background-color: #34B7F1; color: white; font-size: 24px; }
+    .fab-book { background: linear-gradient(135deg, #BF953F, #FCF6BA); color: black; font-size: 20px; }
   </style>
 </head>
-<body class="overflow-x-hidden">
+<body class="overflow-x-hidden pt-24 md:pt-28">
 
-  <!-- Navbar -->
-<div id="global-header"></div>
+  <!-- 1. STICKY PREMIUM NAVBAR HEADER -->
+  <header class="fixed top-0 left-0 w-full z-50 bg-black/90 border-b border-zinc-900/80 backdrop-blur-xl premium-transition">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-24 flex items-center justify-between">
+      
+      <!-- LOGO AREA -->
+      <a href="#" class="flex items-center group">
+        <div class="w-16 h-16 rounded-full overflow-hidden border border-gold/30 flex items-center justify-center bg-zinc-950 shadow-[0_0_15px_rgba(212,175,55,0.05)] group-hover:border-gold/80 group-hover:shadow-[0_0_20px_rgba(212,175,55,0.2)] premium-transition transform group-hover:scale-105">
+          <img src="logo.png" alt="Hair Magician" class="w-full h-full object-cover">
+        </div>
+      </a>
 
-  <!-- Hero Section with Background Video -->
-  <section class="h-screen w-full relative flex flex-col justify-center items-center text-center px-4 overflow-hidden">
-    <!-- 🎥 Background Video Layer -->
-    <video autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover z-0 opacity-40">
-      <!-- Premium Salon ambiance dynamic background stock video -->
+      <!-- DESKTOP MENU LINKS -->
+      <nav class="hidden lg:flex items-center space-x-8 text-xs uppercase tracking-widest font-medium">
+        <a href="#" class="text-gold nav-link-effect premium-transition">Home</a>
+        <a href="#about" class="text-zinc-400 hover:text-gold nav-link-effect premium-transition">About</a>
+        <a href="#detailed-services" class="text-zinc-400 hover:text-gold nav-link-effect premium-transition">Services</a>
+        <a href="#gallery" class="text-zinc-400 hover:text-gold nav-link-effect premium-transition">Gallery</a>
+        <a href="#pricing" class="text-zinc-400 hover:text-gold nav-link-effect premium-transition">Pricing</a>
+        <a href="#booking" class="text-zinc-400 hover:text-gold nav-link-effect premium-transition">Book Appointment</a>
+        <a href="#contact" class="text-zinc-400 hover:text-gold nav-link-effect premium-transition">Contact</a>
+      </nav>
+
+      <!-- STICKY CTA BUTTON + PHONE NUMBER -->
+      <div class="hidden sm:flex items-center space-x-6">
+        <a href="tel:+919100325489" class="text-zinc-400 hover:text-gold premium-transition text-xs font-semibold flex items-center space-x-2 transform hover:translate-x-0.5">
+          <span class="text-gold text-sm animate-pulse">📞</span>
+          <span class="tracking-wider">+91 9100325489</span>
+        </a>
+        <a href="#booking" class="bg-gold-gradient text-black font-bold uppercase text-xs tracking-widest px-6 py-3 rounded-sm hover:opacity-90 shadow-[0_4px_20px_rgba(176,135,40,0.15)] hover:shadow-[0_4px_25px_rgba(176,135,40,0.35)] transform hover:-translate-y-0.5 active:translate-y-0 premium-transition">
+          Book Now
+        </a>
+      </div>
+
+      <!-- MOBILE HAMBURGER BUTTON -->
+      <div class="lg:hidden flex items-center space-x-4">
+        <a href="tel:+919100325489" class="sm:hidden text-gold text-lg transition-transform active:scale-95">📞</a>
+        <button id="menu-btn" class="text-gold focus:outline-none transition-transform active:scale-90" aria-label="Toggle Menu">
+          <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- MOBILE DROPDOWN MENU -->
+    <div id="mobile-menu" class="hidden lg:hidden bg-zinc-950/95 border-b border-zinc-900/80 px-6 py-6 space-y-4 text-sm uppercase tracking-widest backdrop-blur-lg">
+      <a href="#" class="block text-gold font-medium">Home</a>
+      <a href="#about" class="block text-zinc-400 hover:text-gold premium-transition">About</a>
+      <a href="#detailed-services" class="block text-zinc-400 hover:text-gold premium-transition">Services</a>
+      <a href="#gallery" class="block text-zinc-400 hover:text-gold premium-transition">Gallery</a>
+      <a href="#pricing" class="block text-zinc-400 hover:text-gold premium-transition">Pricing</a>
+      <a href="#booking" class="block text-zinc-400 hover:text-gold premium-transition">Book Appointment</a>
+      <a href="#contact" class="block text-zinc-400 hover:text-gold premium-transition">Contact</a>
+      <div class="pt-4 border-t border-zinc-900 flex flex-col space-y-3">
+        <a href="tel:+919100325489" class="text-zinc-400 text-xs font-semibold">📞 +91 9100325489</a>
+        <a href="#booking" class="bg-gold-gradient text-black font-semibold text-center uppercase text-xs tracking-widest py-3 rounded-sm shadow-md">Book Now</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- 2. Hero Section with Background Video -->
+  <section class="h-[calc(100vh-6rem)] w-full relative flex flex-col justify-center items-center text-center px-4 overflow-hidden">
+    <video autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover z-0 opacity-40 transition-transform duration-[10s] hover:scale-105">
       <source src="https://assets.mixkit.co/videos/preview/mixkit-hairdresser-cutting-hair-of-a-woman-41584-large.mp4" type="video/mp4">
       Your browser does not support the video tag.
     </video>
-    
-    <!-- Dark Gradient Overlay for text readability -->
     <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black opacity-80 z-10"></div>
-    
-    <div class="relative z-20">
-      <h1 data-aos="fade-up" class="text-5xl md:text-7xl font-premium text-gold mb-4 tracking-wide">Transform Your Look</h1>
-      <p data-aos="fade-up" data-aos-delay="200" class="text-zinc-300 text-lg md:text-xl max-w-xl mb-8 font-light mx-auto">Experience luxury grooming and magical hair transformations at Delhi's finest unisex destination.</p>
-      <a data-aos="zoom-in" data-aos-delay="400" href="./contact.html" class="border border-gold px-8 py-3 text-gold uppercase tracking-widest hover:bg-gold-gradient hover:text-black transition-all duration-500 font-semibold inline-block">Reserve a Slot</a>
+    <div class="relative z-20 max-w-4xl px-4">
+      <h1 data-aos="fade-up" data-aos-duration="1000" class="text-5xl md:text-7xl font-premium text-gold mb-4 tracking-wide">Transform Your Look</h1>
+      <p data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000" class="text-zinc-300 text-lg md:text-xl max-w-xl mb-8 font-light mx-auto">Experience luxury grooming and magical hair transformations at Delhi's finest unisex destination.</p>
+      <a data-aos="zoom-in" data-aos-delay="400" data-aos-duration="800" href="#booking" class="border border-gold px-8 py-3 text-gold uppercase tracking-widest hover:bg-gold-gradient hover:text-black hover:tracking-[0.2em] font-semibold inline-block premium-transition shadow-[0_0_15px_rgba(212,175,55,0)] hover:shadow-[0_0_25px_rgba(212,175,55,0.3)]">Reserve a Slot</a>
     </div>
   </section>
 
-  <!-- 📸 Premium Look & Feel Visual Gallery (Unisex Showcasing) -->
-  <section class="py-20 px-6 max-w-7xl mx-auto">
-    <div class="text-center mb-16">
-      <h2 data-aos="fade-up" class="text-3xl font-premium text-gold tracking-wide mb-4">The Art of Luxury Styling</h2>
-      <p data-aos="fade-up" data-aos-delay="100" class="text-zinc-400 max-w-md mx-auto text-sm">A glimpse into our signature cuts, advanced hair coloring, and modern makeover setups for both men & women.</p>
+  <!-- 3. About Us Section -->
+  <section id="about" class="py-24 px-6 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+    <div data-aos="fade-up" data-aos-duration="1000">
+      <h2 class="text-3xl font-premium text-gold tracking-wide mb-6">Look Good. Feel Magical.</h2>
+      <p class="text-zinc-300 font-light leading-relaxed mb-6">
+        At Hair Magician Unisex Salon, we believe that your hair and skin are the ultimate canvas of self-expression. Backed by years of experience in Delhi's luxury fashion and grooming landscape, our expert stylists use cutting-edge techniques to unleash the magic hidden within your look.
+      </p>
+      <p class="text-zinc-400 font-light leading-relaxed mb-6">
+        Whether you are seeking a complete architectural beard change, a magical Balayage, or deep therapeutic hair care rituals, we craft premium experiences customized uniquely for you.
+      </p>
+      <div class="border-t border-zinc-800 pt-6 grid grid-cols-3 gap-4 text-center">
+        <div class="group"><h3 class="text-gold font-premium text-2xl font-bold transition-transform group-hover:scale-110 premium-transition">100%</h3><p class="text-zinc-500 text-[10px] uppercase tracking-wider mt-1">Premium Brands</p></div>
+        <div class="group"><h3 class="text-gold font-premium text-2xl font-bold transition-transform group-hover:scale-110 premium-transition">50k+</h3><p class="text-zinc-500 text-[10px] uppercase tracking-wider mt-1">Happy Clients</p></div>
+        <div class="group"><h3 class="text-gold font-premium text-2xl font-bold transition-transform group-hover:scale-110 premium-transition">Top</h3><p class="text-zinc-500 text-[10px] uppercase tracking-wider mt-1">Delhi Stylists</p></div>
+      </div>
     </div>
+    <div data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200" class="grid grid-cols-2 gap-6 relative">
+      <div class="overflow-hidden border border-zinc-900 rounded-sm shadow-2xl">
+        <img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?q=80&w=600&auto=format&fit=crop" alt="Salon Ambiance" class="w-full h-64 object-cover transform hover:scale-105 premium-transition">
+      </div>
+      <div class="overflow-hidden border border-zinc-900 rounded-sm shadow-2xl mt-8">
+        <img src="https://images.unsplash.com/photo-1621605815971-fbc98d665033?q=80&w=600&auto=format&fit=crop" alt="Stylist Work" class="w-full h-64 object-cover transform hover:scale-105 premium-transition">
+      </div>
+    </div>
+  </section>
 
-    <!-- Images Showcase Grid -->
+  <!-- 4. Gallery Section (Fixed Small Text Animation) -->
+  <section id="gallery" class="py-24 px-6 max-w-7xl mx-auto border-t border-zinc-900/60">
+    <div class="text-center mb-16">
+      <h2 data-aos="fade-up" data-aos-duration="1000" class="text-3xl font-premium text-gold tracking-wide mb-4">The Art of Luxury Styling</h2>
+      <p data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000" class="text-zinc-400 max-w-md mx-auto text-sm font-light">A glimpse into our signature cuts, advanced hair coloring, and modern makeover setups for both men & women.</p>
+    </div>
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-      <!-- Image 1: Women Advanced Styling -->
-      <div data-aos="zoom-in" class="relative group h-96 overflow-hidden border border-zinc-800 rounded-sm">
-        <img src="https://images.unsplash.com/photo-1562322140-8baeececf3df?q=80&w=600&auto=format&fit=crop" alt="Women Hair Magic" class="w-full h-full object-cover transition duration-700 group-hover:scale-110">
-        <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
-          <p class="font-premium text-gold text-lg tracking-wider">Vibrant Coloring & Cuts</p>
+      <div data-aos="zoom-in" data-aos-duration="800" class="relative group h-96 overflow-hidden border border-zinc-800 rounded-sm shadow-lg hover:border-gold/30 premium-transition">
+        <img src="https://images.unsplash.com/photo-1562322140-8baeececf3df?q=80&w=600&auto=format&fit=crop" alt="Women Hair Magic" class="w-full h-full object-cover premium-transition group-hover:scale-110 filter brightness-90 group-hover:brightness-75">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 premium-transition flex items-end p-6">
+          <p class="font-premium text-gold text-lg tracking-wider transform translate-y-4 group-hover:translate-y-0 premium-transition">Vibrant Coloring & Cuts</p>
         </div>
       </div>
-
-      <!-- Image 2: Men Luxury Barber & Grooming -->
-      <div data-aos="zoom-in" data-aos-delay="100" class="relative group h-96 overflow-hidden border border-zinc-800 rounded-sm">
-        <img src="https://images.unsplash.com/photo-1621605815971-fbc98d665033?q=80&w=600&auto=format&fit=crop" alt="Men Grooming Art" class="w-full h-full object-cover transition duration-700 group-hover:scale-110">
-        <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
-          <p class="font-premium text-gold text-lg tracking-wider">Classic & Modern Beard Architecture</p>
+      <div data-aos="zoom-in" data-aos-delay="100" data-aos-duration="800" class="relative group h-96 overflow-hidden border border-zinc-800 rounded-sm shadow-lg hover:border-gold/30 premium-transition">
+        <img src="https://images.unsplash.com/photo-1621605815971-fbc98d665033?q=80&w=600&auto=format&fit=crop" alt="Men Grooming Art" class="w-full h-full object-cover premium-transition group-hover:scale-110 filter brightness-90 group-hover:brightness-75">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 premium-transition flex items-end p-6">
+          <p class="font-premium text-gold text-lg tracking-wider transform translate-y-4 group-hover:translate-y-0 premium-transition">Beard Architecture</p>
         </div>
       </div>
-
-      <!-- Image 3: Premium Hair Spa Treatments -->
-      <div data-aos="zoom-in" data-aos-delay="200" class="relative group h-96 overflow-hidden border border-zinc-800 rounded-sm">
-        <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?q=80&w=600&auto=format&fit=crop" alt="Salon Spa Aesthetics" class="w-full h-full object-cover transition duration-700 group-hover:scale-110">
-        <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
-          <p class="font-premium text-gold text-lg tracking-wider">Therapeutic Hair Spa & Rituals</p>
+      <div data-aos="zoom-in" data-aos-delay="200" data-aos-duration="800" class="relative group h-96 overflow-hidden border border-zinc-800 rounded-sm shadow-lg hover:border-gold/30 premium-transition">
+        <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?q=80&w=600&auto=format&fit=crop" alt="Salon Spa Aesthetics" class="w-full h-full object-cover premium-transition group-hover:scale-110 filter brightness-90 group-hover:brightness-75">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 premium-transition flex items-end p-6">
+          <p class="font-premium text-gold text-lg tracking-wider transform translate-y-4 group-hover:translate-y-0 premium-transition">Therapeutic Hair Spa</p>
         </div>
       </div>
-
-      <!-- Image 4: High-End Unisex Lounge Ambiance -->
-      <div data-aos="zoom-in" data-aos-delay="300" class="relative group h-96 overflow-hidden border border-zinc-800 rounded-sm">
-        <img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?q=80&w=600&auto=format&fit=crop" alt="Luxury Salon Setup" class="w-full h-full object-cover transition duration-700 group-hover:scale-110">
-        <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
-          <p class="font-premium text-gold text-lg tracking-wider">Premium Experience Lounges</p>
+      <div data-aos="zoom-in" data-aos-delay="300" data-aos-duration="800" class="relative group h-96 overflow-hidden border border-zinc-800 rounded-sm shadow-lg hover:border-gold/30 premium-transition">
+        <img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?q=80&w=600&auto=format&fit=crop" alt="Luxury Salon Setup" class="w-full h-full object-cover premium-transition group-hover:scale-110 filter brightness-90 group-hover:brightness-75">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 premium-transition flex items-end p-6">
+          <p class="font-premium text-gold text-lg tracking-wider transform translate-y-4 group-hover:translate-y-0 premium-transition">Premium Lounges</p>
         </div>
       </div>
     </div>
   </section>
 
   <!-- Instagram Video Section -->
-  <section class="py-20 bg-zinc-950 border-t border-zinc-900 px-6">
+  <section class="py-24 bg-zinc-950 border-t border-zinc-900/60 px-6">
     <div class="max-w-6xl mx-auto text-center">
-      <h2 data-aos="fade-right" class="text-3xl font-premium text-gold mb-4 tracking-wide">Magical Transformations</h2>
-      <p class="text-zinc-500 text-sm mb-12">Follow us on Instagram <a href="https://www.instagram.com/hair_magician_unisex_salon/" target="_blank" class="text-gold hover:underline">@hair_magician_unisex_salon</a> for daily updates</p>
+      <h2 data-aos="fade-up" data-aos-duration="1000" class="text-3xl font-premium text-gold mb-4 tracking-wide">Magical Transformations</h2>
+      <p data-aos="fade-up" data-aos-delay="150" data-aos-duration="1000" class="text-zinc-500 text-sm mb-12 font-light">Follow us on Instagram <a href="https://www.instagram.com/hair_magician_unisex_salon/" target="_blank" class="text-gold hover:underline premium-transition">@hair_magician_unisex_salon</a> for daily updates</p>
       
       <!-- Video Grid -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        
-        <!-- Reel 1 -->
-        <div data-aos="fade-up" class="aspect-[9/16] bg-zinc-900 border border-zinc-800 rounded-lg overflow-hidden instagram-wrapper relative group shadow-2xl">
-          <blockquote class="instagram-media" data-instgrm-captioned data-instgrm-permalink="https://www.instagram.com/reel/DahmOCPSdYc/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14" style=" background:#FFF; border:0; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:540px; min-width:326px; padding:0; width:99.375%; width:-webkit-calc(100% - 2px); width:calc(100% - 2px);"><div style="padding:16px;"> <a href="https://www.instagram.com/reel/DahmOCPSdYc/?utm_source=ig_embed&amp;utm_campaign=loading" style=" background:#FFFFFF; line-height:0; padding:0 0; text-align:center; text-decoration:none; width:100%;" target="_blank"> <div style=" display: flex; flex-direction: row; align-items: center;"> <div style="background-color: #F4F4F4; border-radius: 50%; flex-grow: 0; height: 40px; margin-right: 14px; width: 40px;"></div> <div style="display: flex; flex-direction: column; flex-grow: 1; justify-content: center;"> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; margin-bottom: 6px; width: 100px;"></div> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; width: 60px;"></div></div></div><div style="padding: 19% 0;"></div> <div style="display:block; height:50px; margin:0 auto 12px; width:50px;"><svg width="50px" height="50px" viewBox="0 0 60 60" version="1.1" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g transform="translate(-511.000000, -20.000000)" fill="#000000"><g><path d="M556.869,30.41 C554.814,30.41 553.148,32.076 553.148,34.131 C553.148,36.186 554.814,37.852 556.869,37.852 C558.924,37.852 560.59,36.186 560.59,34.131 C560.59,32.076 558.924,30.41 556.869,30.41 M541,60.657 C535.114,60.657 530.342,55.887 530.342,50 C530.342,44.114 535.114,39.342 541,39.342 C546.887,39.342 551.658,44.114 551.658,50 C551.658,55.887 546.887,60.657 541,60.657 M541,33.886 C532.1,33.886 524.886,41.1 524.886,50 C524.886,58.899 532.1,66.113 541,66.113 C549.9,66.113 557.115,58.899 557.115,50 C557.115,41.1 549.9,33.886 541,33.886 M565.378,62.101 C565.244,65.022 564.756,66.606 564.346,67.663 C563.803,69.06 563.154,70.057 562.106,71.106 C561.058,72.155 560.06,72.803 558.662,73.347 C557.607,73.757 556.021,74.244 553.102,74.378 C549.944,74.521 548.997,74.552 541,74.552 C533.003,74.552 532.056,74.521 528.898,74.378 C525.979,74.244 524.393,73.757 523.338,73.347 C521.94,72.803 520.942,72.155 519.894,71.106 C518.846,70.057 518.197,69.06 517.654,67.663 C517.244,66.606 516.755,65.022 516.623,62.101 C516.479,58.943 516.448,57.996 516.448,50 C516.448,42.003 516.479,41.056 516.623,37.899 C516.755,34.978 517.244,33.391 517.654,32.338 C518.197,30.938 518.846,29.942 519.894,28.894 C520.942,27.846 521.94,27.196 523.338,26.654 C524.393,26.244 525.979,25.756 528.898,25.623 C532.057,25.479 533.004,25.448 541,25.448 C548.997,25.448 549.943,25.479 553.102,25.623 C556.021,25.756 557.607,26.244 558.662,26.654 C560.06,27.196 561.058,27.846 562.106,28.894 C563.154,29.942 563.803,30.938 564.346,32.338 C564.756,33.391 565.244,34.978 565.378,37.899 C565.522,41.056 565.552,42.003 565.552,50 C565.552,57.996 565.522,58.943 565.378,62.101 M570.82,37.631 C570.674,34.438 570.167,32.258 569.425,30.349 C568.659,28.377 567.633,26.702 565.965,25.035 C564.297,23.368 562.623,22.342 560.652,21.575 C558.743,20.834 556.562,20.326 553.369,20.18 C550.169,20.033 549.148,20 541,20 C532.853,20 531.831,20.033 528.631,20.18 C525.438,20.326 523.257,20.834 521.349,21.575 C519.376,22.342 517.703,23.368 516.035,25.035 C514.368,26.702 513.342,28.377 512.574,30.349 C511.834,32.258 511.326,34.438 511.181,37.631 C511.035,40.831 511,41.851 511,50 C511,58.147 511.035,59.17 511.181,62.369 C511.326,65.562 511.834,67.743 512.574,69.651 C513.342,71.625 514.368,73.296 516.035,74.965 C517.703,76.634 519.376,77.658 521.349,78.425 C523.257,79.167 525.438,79.673 528.631,79.82 C531.831,79.965 532.853,80.001 541,80.001 C549.148,80.001 550.169,79.965 553.369,79.82 C556.562,79.673 558.743,79.167 560.652,78.425 C562.623,77.658 564.297,76.634 565.965,74.965 C567.633,73.296 568.659,71.625 569.425,69.651 C570.167,67.743 570.674,65.562 570.82,62.369 C570.966,59.17 571,58.147 571,50 C571,41.851 570.966,40.831 570.82,37.631"></path></g></g></g></svg></div><div style="padding-top: 8px;"> <div style=" color:#3897f0; font-family:Arial,sans-serif; font-size:14px; font-style:normal; font-weight:550; line-height:18px;">View this post on Instagram</div></div><div style="padding: 12.5% 0;"></div> <div style="display: flex; flex-direction: row; margin-bottom: 14px; align-items: center;"><div> <div style="background-color: #F4F4F4; border-radius: 50%; height: 12.5px; width: 12.5px; transform: translateX(0px) translateY(7px);"></div> <div style="background-color: #F4F4F4; height: 12.5px; transform: rotate(-45deg) translateX(3px) translateY(1px); width: 12.5px; flex-grow: 0; margin-right: 14px; margin-left: 2px;"></div> <div style="background-color: #F4F4F4; border-radius: 50%; height: 12.5px; width: 12.5px; transform: translateX(9px) translateY(-18px);"></div></div><div style="margin-left: 8px;"> <div style=" background-color: #F4F4F4; border-radius: 50%; flex-grow: 0; height: 20px; width: 20px;"></div> <div style=" width: 0; height: 0; border-top: 2px solid transparent; border-left: 6px solid #f4f4f4; border-bottom: 2px solid transparent; transform: translateX(16px) translateY(-4px) rotate(30deg)"></div></div><div style="margin-left: auto;"> <div style=" width: 0px; border-top: 8px solid #F4F4F4; border-right: 8px solid transparent; transform: translateY(16px);"></div> <div style=" background-color: #F4F4F4; flex-grow: 0; height: 12px; width: 16px; transform: translateY(-4px);"></div> <div style=" width: 0; height: 0; border-top: 8px solid #F4F4F4; border-left: 8px solid transparent; transform: translateY(-4px) translateX(8px);"></div></div></div> <div style="display: flex; flex-direction: column; flex-grow: 1; justify-content: center; margin-bottom: 24px;"> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; margin-bottom: 6px; width: 224px;"></div> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; width: 144px;"></div></div></a><p style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; line-height:17px; margin-bottom:0; margin-top:8px; overflow:hidden; padding:8px 0 7px; text-align:center; text-overflow:ellipsis; white-space:nowrap;"><a href="https://www.instagram.com/reel/DahmOCPSdYc/?utm_source=ig_embed&amp;utm_campaign=loading" style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; font-style:normal; font-weight:normal; line-height:17px; text-decoration:none;" target="_blank">A post shared by Hair Magician (@hair_magician_unisex_salon)</a></p></div></blockquote>
-<script async src="//www.instagram.com/embed.js"></script>
+        <div data-aos="fade-up" data-aos-duration="1000" class="aspect-[9/16] bg-zinc-900 border border-zinc-800/80 rounded-lg overflow-hidden instagram-wrapper relative group shadow-2xl hover:border-gold/20 premium-transition">
+          <blockquote class="instagram-media" data-instgrm-captioned data-instgrm-permalink="https://www.instagram.com/reel/DahmOCPSdYc/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14" style=" background:#FFF; border:0; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:540px; min-width:326px; padding:0; width:99.375%; width:-webkit-calc(100% - 2px); width:calc(100% - 2px);">
+            <a href="https://www.instagram.com/reel/DahmOCPSdYc/?utm_source=ig_embed&amp;utm_campaign=loading" target="_blank">View on Instagram</a>
+          </blockquote>
         </div>
-
-        <!-- Reel 2 -->
-        <div data-aos="fade-up" data-aos-delay="200" class="aspect-[9/16] bg-zinc-900 border border-zinc-800 rounded-lg overflow-hidden instagram-wrapper relative group shadow-2xl">
-          <blockquote class="instagram-media" data-instgrm-captioned data-instgrm-permalink="https://www.instagram.com/reel/DaJ9lUYytbu/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14" style=" background:#FFF; border:0; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:540px; min-width:326px; padding:0; width:99.375%; width:-webkit-calc(100% - 2px); width:calc(100% - 2px);"><div style="padding:16px;"> <a href="https://www.instagram.com/reel/DaJ9lUYytbu/?utm_source=ig_embed&amp;utm_campaign=loading" style=" background:#FFFFFF; line-height:0; padding:0 0; text-align:center; text-decoration:none; width:100%;" target="_blank"> <div style=" display: flex; flex-direction: row; align-items: center;"> <div style="background-color: #F4F4F4; border-radius: 50%; flex-grow: 0; height: 40px; margin-right: 14px; width: 40px;"></div> <div style="display: flex; flex-direction: column; flex-grow: 1; justify-content: center;"> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; margin-bottom: 6px; width: 100px;"></div> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; width: 60px;"></div></div></div><div style="padding: 19% 0;"></div> <div style="display:block; height:50px; margin:0 auto 12px; width:50px;"><svg width="50px" height="50px" viewBox="0 0 60 60" version="1.1" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g transform="translate(-511.000000, -20.000000)" fill="#000000"><g><path d="M556.869,30.41 C554.814,30.41 553.148,32.076 553.148,34.131 C553.148,36.186 554.814,37.852 556.869,37.852 C558.924,37.852 560.59,36.186 560.59,34.131 C560.59,32.076 558.924,30.41 556.869,30.41 M541,60.657 C535.114,60.657 530.342,55.887 530.342,50 C530.342,44.114 535.114,39.342 541,39.342 C546.887,39.342 551.658,44.114 551.658,50 C551.658,55.887 546.887,60.657 541,60.657 M541,33.886 C532.1,33.886 524.886,41.1 524.886,50 C524.886,58.899 532.1,66.113 541,66.113 C549.9,66.113 557.115,58.899 557.115,50 C557.115,41.1 549.9,33.886 541,33.886 M565.378,62.101 C565.244,65.022 564.756,66.606 564.346,67.663 C563.803,69.06 563.154,70.057 562.106,71.106 C561.058,72.155 560.06,72.803 558.662,73.347 C557.607,73.757 556.021,74.244 553.102,74.378 C549.944,74.521 548.997,74.552 541,74.552 C533.003,74.552 532.056,74.521 528.898,74.378 C525.979,74.244 524.393,73.757 523.338,73.347 C521.94,72.803 520.942,72.155 519.894,71.106 C518.846,70.057 518.197,69.06 517.654,67.663 C517.244,66.606 516.755,65.022 516.623,62.101 C516.479,58.943 516.448,57.996 516.448,50 C516.448,42.003 516.479,41.056 516.623,37.899 C516.755,34.978 517.244,33.391 517.654,32.338 C518.197,30.938 518.846,29.942 519.894,28.894 C520.942,27.846 521.94,27.196 523.338,26.654 C524.393,26.244 525.979,25.756 528.898,25.623 C532.057,25.479 533.004,25.448 541,25.448 C548.997,25.448 549.943,25.479 553.102,25.623 C556.021,25.756 557.607,26.244 558.662,26.654 C560.06,27.196 561.058,27.846 562.106,28.894 C563.154,29.942 563.803,30.938 564.346,32.338 C564.756,33.391 565.244,34.978 565.378,37.899 C565.522,41.056 565.552,42.003 565.552,50 C565.552,57.996 565.522,58.943 565.378,62.101 M570.82,37.631 C570.674,34.438 570.167,32.258 569.425,30.349 C568.659,28.377 567.633,26.702 565.965,25.035 C564.297,23.368 562.623,22.342 560.652,21.575 C558.743,20.834 556.562,20.326 553.369,20.18 C550.169,20.033 549.148,20 541,20 C532.853,20 531.831,20.033 528.631,20.18 C525.438,20.326 523.257,20.834 521.349,21.575 C519.376,22.342 517.703,23.368 516.035,25.035 C514.368,26.702 513.342,28.377 512.574,30.349 C511.834,32.258 511.326,34.438 511.181,37.631 C511.035,40.831 511,41.851 511,50 C511,58.147 511.035,59.17 511.181,62.369 C511.326,65.562 511.834,67.743 512.574,69.651 C513.342,71.625 514.368,73.296 516.035,74.965 C517.703,76.634 519.376,77.658 521.349,78.425 C523.257,79.167 525.438,79.673 528.631,79.82 C531.831,79.965 532.853,80.001 541,80.001 C549.148,80.001 550.169,79.965 553.369,79.82 C556.562,79.673 558.743,79.167 560.652,78.425 C562.623,77.658 564.297,76.634 565.965,74.965 C567.633,73.296 568.659,71.625 569.425,69.651 C570.167,67.743 570.674,65.562 570.82,62.369 C570.966,59.17 571,58.147 571,50 C571,41.851 570.966,40.831 570.82,37.631"></path></g></g></g></svg></div><div style="padding-top: 8px;"> <div style=" color:#3897f0; font-family:Arial,sans-serif; font-size:14px; font-style:normal; font-weight:550; line-height:18px;">View this post on Instagram</div></div><div style="padding: 12.5% 0;"></div> <div style="display: flex; flex-direction: row; margin-bottom: 14px; align-items: center;"><div> <div style="background-color: #F4F4F4; border-radius: 50%; height: 12.5px; width: 12.5px; transform: translateX(0px) translateY(7px);"></div> <div style="background-color: #F4F4F4; height: 12.5px; transform: rotate(-45deg) translateX(3px) translateY(1px); width: 12.5px; flex-grow: 0; margin-right: 14px; margin-left: 2px;"></div> <div style="background-color: #F4F4F4; border-radius: 50%; height: 12.5px; width: 12.5px; transform: translateX(9px) translateY(-18px);"></div></div><div style="margin-left: 8px;"> <div style=" background-color: #F4F4F4; border-radius: 50%; flex-grow: 0; height: 20px; width: 20px;"></div> <div style=" width: 0; height: 0; border-top: 2px solid transparent; border-left: 6px solid #f4f4f4; border-bottom: 2px solid transparent; transform: translateX(16px) translateY(-4px) rotate(30deg)"></div></div><div style="margin-left: auto;"> <div style=" width: 0px; border-top: 8px solid #F4F4F4; border-right: 8px solid transparent; transform: translateY(16px);"></div> <div style=" background-color: #F4F4F4; flex-grow: 0; height: 12px; width: 16px; transform: translateY(-4px);"></div> <div style=" width: 0; height: 0; border-top: 8px solid #F4F4F4; border-left: 8px solid transparent; transform: translateY(-4px) translateX(8px);"></div></div></div> <div style="display: flex; flex-direction: column; flex-grow: 1; justify-content: center; margin-bottom: 24px;"> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; margin-bottom: 6px; width: 224px;"></div> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; width: 144px;"></div></div></a><p style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; line-height:17px; margin-bottom:0; margin-top:8px; overflow:hidden; padding:8px 0 7px; text-align:center; text-overflow:ellipsis; white-space:nowrap;"><a href="https://www.instagram.com/reel/DaJ9lUYytbu/?utm_source=ig_embed&amp;utm_campaign=loading" style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; font-style:normal; font-weight:normal; line-height:17px; text-decoration:none;" target="_blank">A post shared by Hair Magician (@hair_magician_unisex_salon)</a></p></div></blockquote>
-<script async src="//www.instagram.com/embed.js"></script>
+        <div data-aos="fade-up" data-aos-delay="150" data-aos-duration="1000" class="aspect-[9/16] bg-zinc-900 border border-zinc-800/80 rounded-lg overflow-hidden instagram-wrapper relative group shadow-2xl hover:border-gold/20 premium-transition">
+          <blockquote class="instagram-media" data-instgrm-captioned data-instgrm-permalink="https://www.instagram.com/reel/DaJ9lUYytbu/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14" style=" background:#FFF; border:0; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:540px; min-width:326px; padding:0; width:99.375%; width:-webkit-calc(100% - 2px); width:calc(100% - 2px);">
+            <a href="https://www.instagram.com/reel/DaJ9lUYytbu/?utm_source=ig_embed&amp;utm_campaign=loading" target="_blank">View on Instagram</a>
+          </blockquote>
         </div>
-
-        <!-- Reel 3 -->
-        <div data-aos="fade-up" data-aos-delay="400" class="aspect-[9/16] bg-zinc-900 border border-zinc-800 rounded-lg overflow-hidden instagram-wrapper relative group shadow-2xl">
-         <blockquote class="instagram-media" data-instgrm-captioned data-instgrm-permalink="https://www.instagram.com/reel/DaIJYFsygPn/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14" style=" background:#FFF; border:0; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:540px; min-width:326px; padding:0; width:99.375%; width:-webkit-calc(100% - 2px); width:calc(100% - 2px);"><div style="padding:16px;"> <a href="https://www.instagram.com/reel/DaIJYFsygPn/?utm_source=ig_embed&amp;utm_campaign=loading" style=" background:#FFFFFF; line-height:0; padding:0 0; text-align:center; text-decoration:none; width:100%;" target="_blank"> <div style=" display: flex; flex-direction: row; align-items: center;"> <div style="background-color: #F4F4F4; border-radius: 50%; flex-grow: 0; height: 40px; margin-right: 14px; width: 40px;"></div> <div style="display: flex; flex-direction: column; flex-grow: 1; justify-content: center;"> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; margin-bottom: 6px; width: 100px;"></div> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; width: 60px;"></div></div></div><div style="padding: 19% 0;"></div> <div style="display:block; height:50px; margin:0 auto 12px; width:50px;"><svg width="50px" height="50px" viewBox="0 0 60 60" version="1.1" xmlns="https://www.w3.org/2000/svg" xmlns:xlink="https://www.w3.org/1999/xlink"><g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><g transform="translate(-511.000000, -20.000000)" fill="#000000"><g><path d="M556.869,30.41 C554.814,30.41 553.148,32.076 553.148,34.131 C553.148,36.186 554.814,37.852 556.869,37.852 C558.924,37.852 560.59,36.186 560.59,34.131 C560.59,32.076 558.924,30.41 556.869,30.41 M541,60.657 C535.114,60.657 530.342,55.887 530.342,50 C530.342,44.114 535.114,39.342 541,39.342 C546.887,39.342 551.658,44.114 551.658,50 C551.658,55.887 546.887,60.657 541,60.657 M541,33.886 C532.1,33.886 524.886,41.1 524.886,50 C524.886,58.899 532.1,66.113 541,66.113 C549.9,66.113 557.115,58.899 557.115,50 C557.115,41.1 549.9,33.886 541,33.886 M565.378,62.101 C565.244,65.022 564.756,66.606 564.346,67.663 C563.803,69.06 563.154,70.057 562.106,71.106 C561.058,72.155 560.06,72.803 558.662,73.347 C557.607,73.757 556.021,74.244 553.102,74.378 C549.944,74.521 548.997,74.552 541,74.552 C533.003,74.552 532.056,74.521 528.898,74.378 C525.979,74.244 524.393,73.757 523.338,73.347 C521.94,72.803 520.942,72.155 519.894,71.106 C518.846,70.057 518.197,69.06 517.654,67.663 C517.244,66.606 516.755,65.022 516.623,62.101 C516.479,58.943 516.448,57.996 516.448,50 C516.448,42.003 516.479,41.056 516.623,37.899 C516.755,34.978 517.244,33.391 517.654,32.338 C518.197,30.938 518.846,29.942 519.894,28.894 C520.942,27.846 521.94,27.196 523.338,26.654 C524.393,26.244 525.979,25.756 528.898,25.623 C532.057,25.479 533.004,25.448 541,25.448 C548.997,25.448 549.943,25.479 553.102,25.623 C556.021,25.756 557.607,26.244 558.662,26.654 C560.06,27.196 561.058,27.846 562.106,28.894 C563.154,29.942 563.803,30.938 564.346,32.338 C564.756,33.391 565.244,34.978 565.378,37.899 C565.522,41.056 565.552,42.003 565.552,50 C565.552,57.996 565.522,58.943 565.378,62.101 M570.82,37.631 C570.674,34.438 570.167,32.258 569.425,30.349 C568.659,28.377 567.633,26.702 565.965,25.035 C564.297,23.368 562.623,22.342 560.652,21.575 C558.743,20.834 556.562,20.326 553.369,20.18 C550.169,20.033 549.148,20 541,20 C532.853,20 531.831,20.033 528.631,20.18 C525.438,20.326 523.257,20.834 521.349,21.575 C519.376,22.342 517.703,23.368 516.035,25.035 C514.368,26.702 513.342,28.377 512.574,30.349 C511.834,32.258 511.326,34.438 511.181,37.631 C511.035,40.831 511,41.851 511,50 C511,58.147 511.035,59.17 511.181,62.369 C511.326,65.562 511.834,67.743 512.574,69.651 C513.342,71.625 514.368,73.296 516.035,74.965 C517.703,76.634 519.376,77.658 521.349,78.425 C523.257,79.167 525.438,79.673 528.631,79.82 C531.831,79.965 532.853,80.001 541,80.001 C549.148,80.001 550.169,79.965 553.369,79.82 C556.562,79.673 558.743,79.167 560.652,78.425 C562.623,77.658 564.297,76.634 565.965,74.965 C567.633,73.296 568.659,71.625 569.425,69.651 C570.167,67.743 570.674,65.562 570.82,62.369 C570.966,59.17 571,58.147 571,50 C571,41.851 570.966,40.831 570.82,37.631"></path></g></g></g></svg></div><div style="padding-top: 8px;"> <div style=" color:#3897f0; font-family:Arial,sans-serif; font-size:14px; font-style:normal; font-weight:550; line-height:18px;">View this post on Instagram</div></div><div style="padding: 12.5% 0;"></div> <div style="display: flex; flex-direction: row; margin-bottom: 14px; align-items: center;"><div> <div style="background-color: #F4F4F4; border-radius: 50%; height: 12.5px; width: 12.5px; transform: translateX(0px) translateY(7px);"></div> <div style="background-color: #F4F4F4; height: 12.5px; transform: rotate(-45deg) translateX(3px) translateY(1px); width: 12.5px; flex-grow: 0; margin-right: 14px; margin-left: 2px;"></div> <div style="background-color: #F4F4F4; border-radius: 50%; height: 12.5px; width: 12.5px; transform: translateX(9px) translateY(-18px);"></div></div><div style="margin-left: 8px;"> <div style=" background-color: #F4F4F4; border-radius: 50%; flex-grow: 0; height: 20px; width: 20px;"></div> <div style=" width: 0; height: 0; border-top: 2px solid transparent; border-left: 6px solid #f4f4f4; border-bottom: 2px solid transparent; transform: translateX(16px) translateY(-4px) rotate(30deg)"></div></div><div style="margin-left: auto;"> <div style=" width: 0px; border-top: 8px solid #F4F4F4; border-right: 8px solid transparent; transform: translateY(16px);"></div> <div style=" background-color: #F4F4F4; flex-grow: 0; height: 12px; width: 16px; transform: translateY(-4px);"></div> <div style=" width: 0; height: 0; border-top: 8px solid #F4F4F4; border-left: 8px solid transparent; transform: translateY(-4px) translateX(8px);"></div></div></div> <div style="display: flex; flex-direction: column; flex-grow: 1; justify-content: center; margin-bottom: 24px;"> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; margin-bottom: 6px; width: 224px;"></div> <div style=" background-color: #F4F4F4; border-radius: 4px; flex-grow: 0; height: 14px; width: 144px;"></div></div></a><p style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; line-height:17px; margin-bottom:0; margin-top:8px; overflow:hidden; padding:8px 0 7px; text-align:center; text-overflow:ellipsis; white-space:nowrap;"><a href="https://www.instagram.com/reel/DaIJYFsygPn/?utm_source=ig_embed&amp;utm_campaign=loading" style=" color:#c9c8cd; font-family:Arial,sans-serif; font-size:14px; font-style:normal; font-weight:normal; line-height:17px; text-decoration:none;" target="_blank">A post shared by Hair Magician (@hair_magician_unisex_salon)</a></p></div></blockquote>
-<script async src="//www.instagram.com/embed.js"></script>
+        <div data-aos="fade-up" data-aos-delay="300" data-aos-duration="1000" class="aspect-[9/16] bg-zinc-900 border border-zinc-800/80 rounded-lg overflow-hidden instagram-wrapper relative group shadow-2xl hover:border-gold/20 premium-transition">
+         <blockquote class="instagram-media" data-instgrm-captioned data-instgrm-permalink="https://www.instagram.com/reel/DaIJYFsygPn/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14" style=" background:#FFF; border:0; border-radius:3px; box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15); margin: 1px; max-width:540px; min-width:326px; padding:0; width:99.375%; width:-webkit-calc(100% - 2px); width:calc(100% - 2px);">
+            <a href="https://www.instagram.com/reel/DaIJYFsygPn/?utm_source=ig_embed&amp;utm_campaign=loading" target="_blank">View on Instagram</a>
+         </blockquote>
         </div>
-
       </div>
     </div>
   </section>
 
-  <!-- Services Section -->
-  <!-- Detailed Unisex Services Section -->
-<section id="detailed-services" class="py-20 px-6 max-w-7xl mx-auto bg-black border border-zinc-900 my-10 rounded-sm">
-  <div class="text-center mb-16">
-    <h2 class="text-3xl font-premium text-gold tracking-widest uppercase mb-4">Our Complete Transformation Menu</h2>
-    <p class="text-zinc-400 max-w-xl mx-auto text-sm font-light">Tailored luxury grooming treatments engineered for both modern gentlemen and sophisticated women.</p>
-  </div>
+  <!-- 5. Services Section -->
+  <section id="detailed-services" class="py-24 px-6 max-w-7xl mx-auto bg-black border border-zinc-900/50 my-10 rounded-sm">
+    <div class="text-center mb-16" data-aos="fade-up" data-aos-duration="1000">
+      <h2 class="text-3xl font-premium text-gold tracking-widest uppercase mb-4">Our Complete Transformation Menu</h2>
+      <p data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000" class="text-zinc-400 max-w-xl mx-auto text-sm font-light">Tailored luxury grooming treatments engineered for both modern gentlemen and sophisticated women.</p>
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <!-- COLUMN 1: MEN -->
+      <div data-aos="fade-up" data-aos-duration="1000" class="bg-zinc-950 border border-zinc-850 p-6 rounded-sm space-y-6 hover:border-gold/30 shadow-lg premium-transition transform hover:-translate-y-1">
+        <div class="flex items-center space-x-3 border-b border-zinc-900 pb-4">
+          <span class="text-gold text-2xl">🕺</span>
+          <h3 class="text-xl font-premium text-gold tracking-wider">Gentlemens Grooming</h3>
+        </div>
+        <ul class="space-y-4 text-sm text-zinc-300">
+          <li class="flex justify-between items-center border-b border-zinc-900/60 pb-2 hover:text-gold premium-transition"><span>Signature Haircut & Styling</span><span class="text-gold font-bold text-xs tracking-wider">Premium</span></li>
+          <li class="flex justify-between items-center border-b border-zinc-900/60 pb-2 hover:text-gold premium-transition"><span>Beard Architecture & Shave</span><span class="text-gold font-bold text-xs tracking-wider">Luxury</span></li>
+          <li class="flex justify-between items-center border-b border-zinc-900/60 pb-2 hover:text-gold premium-transition"><span>Hair Detanning & Mask</span><span class="text-gold font-bold text-xs tracking-wider">Classic</span></li>
+          <li class="flex justify-between items-center border-b border-zinc-900/60 pb-2 hover:text-gold premium-transition"><span>Keratin / Smoothening</span><span class="text-gold font-bold text-xs tracking-wider">Advanced</span></li>
+          <li class="flex justify-between items-center pb-2 hover:text-gold premium-transition"><span>Global Hair Color & Highlights</span><span class="text-gold font-bold text-xs tracking-wider">Trend</span></li>
+        </ul>
+      </div>
+      <!-- COLUMN 2: WOMEN -->
+      <div data-aos="fade-up" data-aos-delay="150" data-aos-duration="1000" class="bg-zinc-950 border border-zinc-850 p-6 rounded-sm space-y-6 hover:border-gold/30 shadow-lg premium-transition transform hover:-translate-y-1">
+        <div class="flex items-center space-x-3 border-b border-zinc-900 pb-4">
+          <span class="text-gold text-2xl">💃</span>
+          <h3 class="text-xl font-premium text-gold tracking-wider">Ladies' Wizardry</h3>
+        </div>
+        <ul class="space-y-4 text-sm text-zinc-300">
+          <li class="flex justify-between items-center border-b border-zinc-900/60 pb-2 hover:text-gold premium-transition"><span>Advanced Couture Cut & Blowdry</span><span class="text-gold font-bold text-xs tracking-wider">Premium</span></li>
+          <li class="flex justify-between items-center border-b border-zinc-900/60 pb-2 hover:text-gold premium-transition"><span>Balayage / Global Highlights</span><span class="text-gold font-bold text-xs tracking-wider">Magical</span></li>
+          <li class="flex justify-between items-center border-b border-zinc-900/60 pb-2 hover:text-gold premium-transition"><span>Cysteine & Nanoplastia</span><span class="text-gold font-bold text-xs tracking-wider">Pro-Care</span></li>
+          <li class="flex justify-between items-center border-b border-zinc-900/60 pb-2 hover:text-gold premium-transition"><span>Luxury Hydra-Facial & Glow</span><span class="text-gold font-bold text-xs tracking-wider">Elite</span></li>
+          <li class="flex justify-between items-center pb-2 hover:text-gold premium-transition"><span>Bridal & Party Makeover</span><span class="text-gold font-bold text-xs tracking-wider">VVIP</span></li>
+        </ul>
+      </div>
+      <!-- COLUMN 3: UNISEX RITUALS -->
+      <div data-aos="fade-up" data-aos-delay="300" data-aos-duration="1000" class="bg-zinc-950 border border-zinc-850 p-6 rounded-sm space-y-6 hover:border-gold/30 shadow-lg premium-transition transform hover:-translate-y-1">
+        <div class="flex items-center space-x-3 border-b border-zinc-900 pb-4">
+          <span class="text-gold text-2xl">✨</span>
+          <h3 class="text-xl font-premium text-gold tracking-wider">Unisex Rituals</h3>
+        </div>
+        <ul class="space-y-4 text-sm text-zinc-300">
+          <li class="flex justify-between items-center border-b border-zinc-900/60 pb-2 hover:text-gold premium-transition"><span>Therapeutic Deep Hair Spa</span><span class="text-gold font-bold text-xs tracking-wider">Relax</span></li>
+          <li class="flex justify-between items-center border-b border-zinc-900/60 pb-2 hover:text-gold premium-transition"><span>Luxury Manicure & Pedicure</span><span class="text-gold font-bold text-xs tracking-wider">Spa Care</span></li>
+          <li class="flex justify-between items-center border-b border-zinc-900/60 pb-2 hover:text-gold premium-transition"><span>Scalp Detoxification</span><span class="text-gold font-bold text-xs tracking-wider">Clinical</span></li>
+          <li class="flex justify-between items-center border-b border-zinc-900/60 pb-2 hover:text-gold premium-transition"><span>Complete Glow-Up Combo</span><span class="text-gold font-bold text-xs tracking-wider">Best Seller</span></li>
+          <li class="flex justify-between items-center pb-2 hover:text-gold premium-transition"><span>Pre-Grooming Shoots Prep Pack</span><span class="text-gold font-bold text-xs tracking-wider">Special</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
 
-  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+  <!-- 6. Pricing & Combo Packages Section -->
+  <section id="pricing" class="py-24 px-6 max-w-7xl mx-auto border-t border-zinc-900/60">
+    <div class="text-center mb-16" data-aos="fade-up" data-aos-duration="1000">
+      <h2 class="text-3xl font-premium text-gold tracking-wide mb-4">Magical Combo Packages</h2>
+      <p data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000" class="text-zinc-400 max-w-md mx-auto text-sm font-light">Specially curated all-in-one grooming rituals at highly competitive starting values.</p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      
+      <!-- Pack 1 -->
+      <div data-aos="fade-up" data-aos-duration="1000" class="border border-zinc-800 bg-zinc-950 p-8 flex flex-col justify-between hover:border-gold/50 shadow-xl hover:shadow-[0_10px_30px_rgba(212,175,55,0.08)] rounded-sm premium-transition transform hover:-translate-y-1">
+        <div>
+          <span class="text-xs text-gold tracking-widest uppercase font-semibold block mb-2">Gentlemen's Ritual</span>
+          <h3 class="text-2xl font-premium text-white mb-4">Royal Groom Combo</h3>
+          <p class="text-zinc-400 text-sm font-light mb-6 leading-relaxed">Signature Haircut + Beard Architecture + Relaxing Head Massage + Activated Charcoal Face Detan Mask.</p>
+        </div>
+        <div class="border-t border-zinc-900/80 pt-6 flex justify-between items-center">
+          <div>
+            <span class="text-zinc-500 line-through text-xs block">Value ₹1,146</span>
+            <span class="text-gold font-bold text-2xl block tracking-wide">₹699</span>
+          </div>
+          <a href="#booking" class="text-xs tracking-widest uppercase border border-gold text-gold px-5 py-3 hover:bg-gold-gradient hover:text-black font-bold rounded-sm premium-transition shadow-sm hover:shadow-lg">Book Combo</a>
+        </div>
+      </div>
+      
+      <!-- Pack 2 -->
+      <div data-aos="fade-up" data-aos-delay="150" data-aos-duration="1000" class="border-2 border-gold bg-zinc-950 p-8 flex flex-col justify-between relative shadow-2xl hover:shadow-[0_10px_35px_rgba(212,175,55,0.15)] rounded-sm premium-transition transform hover:-translate-y-1">
+        <div class="absolute top-0 right-6 transform -translate-y-1/2 bg-gold-gradient text-black font-bold uppercase text-[9px] tracking-widest px-3 py-1 rounded-sm shadow-md">Popular</div>
+        <div>
+          <span class="text-xs text-gold tracking-widest uppercase font-semibold block mb-2">Ladies' Luxury</span>
+          <h3 class="text-2xl font-premium text-white mb-4">Glow & Care Wizardry</h3>
+          <p class="text-zinc-400 text-sm font-light mb-6 leading-relaxed">Advanced Couture Cut + Therapeutic Hair Spa + Luxury Hydra-Facial Treatment + Ice-Cream Pedicure.</p>
+        </div>
+        <div class="border-t border-zinc-900/80 pt-6 flex justify-between items-center">
+          <div>
+            <span class="text-zinc-500 line-through text-xs block">Value ₹4,596</span>
+            <span class="text-gold font-bold text-2xl block tracking-wide">₹2,999</span>
+          </div>
+          <a href="#booking" class="text-xs tracking-widest uppercase bg-gold-gradient text-black px-5 py-3 font-bold rounded-sm hover:opacity-90 shadow-md premium-transition">Book Combo</a>
+        </div>
+      </div>
+      
+      <!-- Pack 3 -->
+      <div data-aos="fade-up" data-aos-delay="300" data-aos-duration="1000" class="border border-zinc-800 bg-zinc-950 p-8 flex flex-col justify-between hover:border-gold/50 shadow-xl hover:shadow-[0_10px_30px_rgba(212,175,55,0.08)] rounded-sm premium-transition transform hover:-translate-y-1">
+        <div>
+          <span class="text-xs text-gold tracking-widest uppercase font-semibold block mb-2">Advanced Care</span>
+          <h3 class="text-2xl font-premium text-white mb-4">Smooth Magic Treatment</h3>
+          <p class="text-zinc-400 text-sm font-light mb-6 leading-relaxed">Premium Pro-Keratin Hair Smoothing or Nanoplastia Treatment + Deep Post-Wash Hydration Ritual.</p>
+        </div>
+        <div class="border-t border-zinc-900/80 pt-6 flex justify-between items-center">
+          <div>
+            <span class="text-zinc-500 line-through text-xs block">Value ₹4,200</span>
+            <span class="text-gold font-bold text-2xl block tracking-wide">₹2,999</span>
+          </div>
+          <a href="#booking" class="text-xs tracking-widest uppercase border border-gold text-gold px-5 py-3 hover:bg-gold-gradient hover:text-black font-bold rounded-sm premium-transition shadow-sm hover:shadow-lg">Book Combo</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 7. Booking Section (Interactive Calendar Layout) -->
+  <section id="booking" class="py-24 px-6 max-w-6xl mx-auto border-t border-zinc-900/60">
+    <div class="text-center mb-16">
+      <h2 data-aos="fade-up" data-aos-duration="1000" class="text-3xl font-premium text-gold mb-4 tracking-wide">Secure Luxury Appointment</h2>
+      <p data-aos="fade-up" data-aos-delay="150" data-aos-duration="1000" class="text-zinc-400 text-sm max-w-md mx-auto font-light">Skip wait times. Select a date from the calendar and fill the request form.</p>
+    </div>
     
-    <!-- COLUMN 1: FOR GENTLEMEN (MEN) -->
-    <div class="bg-zinc-950 border border-zinc-800 p-6 rounded-sm space-y-6 hover:border-gold/50 transition duration-300">
-      <div class="flex items-center space-x-3 border-b border-zinc-900 pb-4">
-        <span class="text-gold text-2xl">🕺</span>
-        <h3 class="text-xl font-premium text-gold tracking-wider">Gentlemen's Grooming</h3>
+    <div data-aos="fade-up" data-aos-delay="300" data-aos-duration="1200" class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      
+      <!-- Left Column: Custom Calendar -->
+      <div class="lg:col-span-5 bg-zinc-950 p-6 border border-zinc-900 rounded-sm shadow-2xl">
+        <div class="flex justify-between items-center mb-6">
+          <h3 id="calendar-month-year" class="text-white font-medium text-lg tracking-wide">July 2026</h3>
+          <div class="flex space-x-2">
+            <button id="prev-month" type="button" class="w-8 h-8 flex items-center justify-center bg-black border border-zinc-800 text-zinc-400 hover:text-gold hover:border-gold rounded-sm premium-transition">❮</button>
+            <button id="next-month" type="button" class="w-8 h-8 flex items-center justify-center bg-black border border-zinc-800 text-zinc-400 hover:text-gold hover:border-gold rounded-sm premium-transition">❯</button>
+          </div>
+        </div>
+        
+        <!-- Days of week -->
+        <div class="grid grid-cols-7 gap-2 text-center text-[10px] uppercase tracking-widest text-zinc-500 mb-4 font-semibold">
+          <div>Su</div><div>Mo</div><div>Tu</div><div>We</div><div>Th</div><div>Fr</div><div>Sa</div>
+        </div>
+        
+        <!-- Calendar Days Grid -->
+        <div id="calendar-days" class="calendar-grid text-zinc-300">
+          <!-- Dynamically generated by JS -->
+        </div>
+
+        <!-- Legend -->
+        <div class="mt-6 pt-4 border-t border-zinc-900/50 flex flex-wrap gap-4 text-[10px] uppercase tracking-widest text-zinc-500">
+          <div class="flex items-center"><span class="w-3 h-3 border border-transparent rounded-sm inline-block mr-2" style="background-color: rgba(212, 175, 55, 0.1);"></span> Available</div>
+          <div class="flex items-center"><span class="w-3 h-3 border border-dashed border-gold rounded-sm inline-block mr-2"></span> Today</div>
+          <div class="flex items-center"><span class="w-3 h-3 bg-gold rounded-sm inline-block mr-2"></span> Selected</div>
+          <div class="flex items-center"><span class="w-3 h-3 bg-zinc-900 rounded-sm inline-block mr-2"></span> Past</div>
+        </div>
+        
+        <!-- Timeslots Container (Hidden initially) -->
+        <div id="timeslots-container" class="hidden mt-8 pt-6 border-t border-zinc-900/50">
+          <h4 class="text-white font-medium text-sm tracking-wide mb-4">Available Slots for <span id="display-selected-date" class="text-gold"></span></h4>
+          <div id="timeslots-grid" class="timeslot-grid">
+            <!-- Dynamically generated by JS -->
+          </div>
+        </div>
       </div>
-      <ul class="space-y-4 text-sm text-zinc-300">
-        <li class="flex justify-between items-center border-b border-zinc-900 pb-2">
-          <span>Signature Haircut & Styling</span>
-          <span class="text-gold font-bold">Premium</span>
-        </li>
-        <li class="flex justify-between items-center border-b border-zinc-900 pb-2">
-          <span>Beard Architecture & Hot Towel Shave</span>
-          <span class="text-gold font-bold">Luxury</span>
-        </li>
-        <li class="flex justify-between items-center border-b border-zinc-900 pb-2">
-          <span>Hair Detanning & Charcoal Mask</span>
-          <span class="text-gold font-bold">Classic</span>
-        </li>
-        <li class="flex justify-between items-center border-b border-zinc-900 pb-2">
-          <span>Keratin / Smoothening for Men</span>
-          <span class="text-gold font-bold">Advanced</span>
-        </li>
-        <li class="flex justify-between items-center pb-2">
-          <span>Global Hair Color & Highlights</span>
-          <span class="text-gold font-bold">Trend</span>
-        </li>
-      </ul>
-    </div>
+      
+      <!-- Right Column: Booking Form -->
+      <form id="booking-form" class="lg:col-span-7 bg-zinc-950 p-8 border border-zinc-900 rounded-sm shadow-2xl grid grid-cols-1 md:grid-cols-2 gap-6 text-left premium-transition hover:border-zinc-800/80">
+        
+        <!-- Field 1: Preferred Date (Read Only from Calendar) -->
+        <div class="group md:col-span-2">
+          <label class="text-zinc-500 text-xs uppercase tracking-widest font-semibold block mb-2">Preferred Date <span class="text-gold">*</span></label>
+          <div class="relative">
+            <span class="absolute left-3.5 top-3.5 text-zinc-500 text-xs">📅</span>
+            <input type="text" id="selected-date-input" readonly placeholder="← Pick a date from the calendar" 
+                   class="w-full bg-black border border-zinc-800 text-gold p-3.5 pl-10 text-xs rounded-sm outline-none cursor-not-allowed">
+          </div>
+        </div>
 
-    <!-- COLUMN 2: FOR LADIES (WOMEN) -->
-    <div class="bg-zinc-950 border border-zinc-800 p-6 rounded-sm space-y-6 hover:border-gold/50 transition duration-300">
-      <div class="flex items-center space-x-3 border-b border-zinc-900 pb-4">
-        <span class="text-gold text-2xl">💃</span>
-        <h3 class="text-xl font-premium text-gold tracking-wider">Ladies' Wizardry</h3>
+        <!-- Field 2: Name -->
+        <div class="group">
+          <label class="text-zinc-500 text-xs uppercase tracking-widest font-semibold block mb-2 transition-colors duration-300 group-focus-within:text-gold group-hover:text-zinc-300">Full Name <span class="text-gold">*</span></label>
+          <input type="text" id="name-input" placeholder="Your full name" 
+                 class="w-full bg-black border border-zinc-800 text-white p-3.5 text-xs rounded-sm outline-none transform premium-transition placeholder-zinc-700 hover:border-zinc-700 hover:bg-zinc-900/30 focus:border-gold focus:bg-zinc-900 focus:scale-[1.02]">
+        </div>
+        
+        <!-- Field 3: Phone -->
+        <div class="group">
+          <label class="text-zinc-500 text-xs uppercase tracking-widest font-semibold block mb-2 transition-colors duration-300 group-focus-within:text-gold group-hover:text-zinc-300">Phone Number <span class="text-gold">*</span></label>
+          <input type="tel" id="phone-input" placeholder="+91 XXXXX XXXXX" 
+                 class="w-full bg-black border border-zinc-800 text-white p-3.5 text-xs rounded-sm outline-none transform premium-transition placeholder-zinc-700 hover:border-zinc-700 hover:bg-zinc-900/30 focus:border-gold focus:bg-zinc-900 focus:scale-[1.02]" required>
+        </div>
+
+        <!-- Field 3.5: Email -->
+        <div class="group md:col-span-2">
+          <label class="text-zinc-500 text-xs uppercase tracking-widest font-semibold block mb-2 transition-colors duration-300 group-focus-within:text-gold group-hover:text-zinc-300">Email Address <span class="text-gold">*</span></label>
+          <input type="email" id="email-input" placeholder="you@example.com" 
+                 class="w-full bg-black border border-zinc-800 text-white p-3.5 text-xs rounded-sm outline-none transform premium-transition placeholder-zinc-700 hover:border-zinc-700 hover:bg-zinc-900/30 focus:border-gold focus:bg-zinc-900 focus:scale-[1.02]" required>
+        </div>
+        
+        <!-- Field 4: Service -->
+        <div class="group">
+          <label class="text-zinc-500 text-xs uppercase tracking-widest font-semibold block mb-2 transition-colors duration-300 group-focus-within:text-gold group-hover:text-zinc-300">Service Required <span class="text-gold">*</span></label>
+          <select id="service-input" class="w-full bg-black border border-zinc-800 text-zinc-400 p-3.5 text-xs rounded-sm outline-none transform premium-transition hover:border-zinc-700 hover:bg-zinc-900/30 focus:border-gold focus:text-white focus:bg-zinc-900 focus:scale-[1.02]">
+            <option>Select a service</option>
+            <option>Gentlemen's Grooming Combo</option>
+            <option>Ladies Couture Styling & Cuts</option>
+            <option>Advanced Treatment (Keratin)</option>
+            <option>Skin Glow Ritual</option>
+          </select>
+        </div>
+
+        <!-- Field 5: Time Slot (Read Only from Timeslots) -->
+        <div class="group">
+          <label class="text-zinc-500 text-xs uppercase tracking-widest font-semibold block mb-2">Preferred Time <span class="text-gold">*</span></label>
+          <div class="relative">
+            <span class="absolute left-3.5 top-3.5 text-zinc-500 text-xs">⏰</span>
+            <input type="text" id="selected-time-input" readonly placeholder="← Pick a time slot" 
+                   class="w-full bg-black border border-zinc-800 text-gold p-3.5 pl-10 text-xs rounded-sm outline-none cursor-not-allowed">
+          </div>
+        </div>
+
+        <!-- Field 6: Textarea -->
+        <div class="group md:col-span-2">
+          <label class="text-zinc-500 text-xs uppercase tracking-widest font-semibold block mb-2 transition-colors duration-300 group-focus-within:text-gold group-hover:text-zinc-300">Anything you'd like us to know?</label>
+          <textarea rows="3" placeholder="E.g. I have sensitive skin, or looking for a completely new look..." 
+                 class="w-full bg-black border border-zinc-800 text-white p-3.5 text-xs rounded-sm outline-none transform premium-transition placeholder-zinc-700 hover:border-zinc-700 hover:bg-zinc-900/30 focus:border-gold focus:bg-zinc-900 focus:scale-[1.01] resize-none"></textarea>
+        </div>
+        
+        <!-- Button -->
+        <div class="md:col-span-2 mt-2">
+          <button type="submit" 
+                  class="w-full bg-gold-gradient text-black font-bold uppercase text-xs tracking-widest py-4 text-center rounded-sm shadow-md premium-transition transform hover:scale-[1.01] hover:tracking-[0.15em] hover:shadow-[0_5px_20px_rgba(212,175,55,0.3)] active:scale-[0.99]">
+            Book My Slot
+          </button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <!-- 8. Contact & Location Section -->
+  <section id="contact" class="py-16 bg-black border-t border-zinc-900/60 px-6">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-12 items-center">
+      <div class="space-y-4" data-aos="fade-up" data-aos-duration="1000">
+        <h4 class="font-premium text-gold text-xl tracking-wider">Lounge Location</h4>
+        <p class="text-zinc-400 text-sm font-light leading-relaxed">
+          Hair Magician Unisex Salon,<br>
+          Premium Luxury Hub, Main Ring Road Area,<br>
+          Delhi, India.
+        </p>
+        <a href="tel:+919100325489" class="text-zinc-500 hover:text-gold transition text-xs block font-medium">📞 Phone: +91 9100325489</a>
       </div>
-      <ul class="space-y-4 text-sm text-zinc-300">
-        <li class="flex justify-between items-center border-b border-zinc-900 pb-2">
-          <span>Advanced Couture Cut & Blowdry</span>
-          <span class="text-gold font-bold">Premium</span>
-        </li>
-        <li class="flex justify-between items-center border-b border-zinc-900 pb-2">
-          <span>Balayage / Ombre / Global Highlights</span>
-          <span class="text-gold font-bold">Magical</span>
-        </li>
-        <li class="flex justify-between items-center border-b border-zinc-900 pb-2">
-          <span>Cysteine & Nanoplastia Treatment</span>
-          <span class="text-gold font-bold">Pro-Care</span>
-        </li>
-        <li class="flex justify-between items-center border-b border-zinc-900 pb-2">
-          <span>Luxury Hydra-Facial & Skin Glow</span>
-          <span class="text-gold font-bold">Elite</span>
-        </li>
-        <li class="flex justify-between items-center pb-2">
-          <span>Bridal & Premium Party Makeover</span>
-          <span class="text-gold font-bold">VVIP</span>
-        </li>
-      </ul>
-    </div>
-
-    <!-- COLUMN 3: UNISEX SPA & EXPERIENCES -->
-    <div class="bg-zinc-950 border border-zinc-800 p-6 rounded-sm space-y-6 hover:border-gold/50 transition duration-300♣">
-      <div class="flex items-center space-x-3 border-b border-zinc-900 pb-4">
-        <span class="text-gold text-2xl">✨</span>
-        <h3 class="text-xl font-premium text-gold tracking-wider">Unisex Rituals</h3>
+      <div class="space-y-2" data-aos="fade-up" data-aos-delay="150" data-aos-duration="1000">
+        <h4 class="font-premium text-gold text-xl tracking-wider">Working Hours</h4>
+        <ul class="text-zinc-400 text-sm font-light space-y-2">
+          <li class="flex justify-between border-b border-zinc-900 pb-1"><span>Monday - Friday</span><span class="text-zinc-300 font-medium">10:00 AM - 09:00 PM</span></li>
+          <li class="flex justify-between pb-1"><span>Saturday - Sunday</span><span class="text-zinc-300 font-medium">09:00 AM - 10:00 PM</span></li>
+        </ul>
       </div>
-      <ul class="space-y-4 text-sm text-zinc-300">
-        <li class="flex justify-between items-center border-b border-zinc-900 pb-2">
-          <span>Therapeutic Deep Hair Spa</span>
-          <span class="text-gold font-bold">Relax</span>
-        </li>
-        <li class="flex justify-between items-center border-b border-zinc-900 pb-2">
-          <span>Luxury Ice-Cream Manicure & Pedicure</span>
-          <span class="text-gold font-bold">Spa Care</span>
-        </li>
-        <li class="flex justify-between items-center border-b border-zinc-900 pb-2">
-          <span>Scalp Detoxification Treatment</span>
-          <span class="text-gold font-bold">Clinical</span>
-        </li>
-        <li class="flex justify-between items-center border-b border-zinc-900 pb-2">
-          <span>Complete Glow-Up Combo (All-in-One)</span>
-          <span class="text-gold font-bold">Best Seller</span>
-        </li>
-        <li class="flex justify-between items-center pb-2">
-          <span>Pre-Grooming Shoots Prep Package</span>
-          <span class="text-gold font-bold">Special</span>
-        </li>
-      </ul>
+      <div data-aos="fade-up" data-aos-delay="300" data-aos-duration="1000" class="h-52 w-full bg-zinc-900 border border-zinc-800/60 rounded-sm overflow-hidden relative shadow-lg group">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d224346.4812241197!2d77.06889754407872!3d28.527280343867664!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cfd5b347eb62d%3A0x37205b715389640!2sDelhi!5e0!3m2!1sen!2sin!4v1710000000000!5m2!1sen!2sin" class="w-full h-full border-0 opacity-60 invert contrast-125 group-hover:opacity-80 premium-transition" allowfullscreen="" loading="lazy"></iframe>
+      </div>
     </div>
+  </section>
 
-  </div>
-</section>
+  <!-- 8. Footer (Fixed Layout - Instantly Visible Without Animation Delays) -->
+  <footer class="bg-zinc-950 border-t border-zinc-900/80 py-8 px-6 text-center text-xs text-zinc-600 tracking-wider">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+      <!-- Left Branding Text (AOS Removed so it never stays blank) -->
+      <p class="font-premium text-gold tracking-widest text-sm uppercase transition-colors duration-300 hover:text-white">
+        Hair Magician Unisex Salon
+      </p>
+      <!-- Right Copyright & Tagline Text -->
+      <p class="font-normal text-zinc-500">
+        &copy; 2026 Hair Magician Salon. Engineered for Excellence.
+      </p>
+    </div>
+  </footer>
 
-  <!-- Scroll Animation Setup & Instagram Embed Widget Script -->
+  <!-- Menu toggle handling script -->
+  <script>
+    const menuBtn = document.getElementById('menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    
+    menuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+
+    const mobileLinks = mobileMenu.querySelectorAll('a');
+    mobileLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.add('hidden');
+      });
+    });
+  </script>
+
+  <!-- Scroll Animation Setup -->
   <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
   <script async src="https://www.instagram.com/embed.js"></script>
-  <script src="component-loader.js"></script>
   <script>
-    AOS.init({ duration: 1000, once: true });
+    AOS.init({ 
+      duration: 1000, 
+      once: false, 
+      mirror: true, 
+      easing: 'ease-out-cubic'
+    });
   </script>
+
+  <!-- Floating Action Buttons -->
+  <div class="fab-container">
+    <a href="https://www.instagram.com/hair_magician_unisex_salon/" target="_blank" class="fab-btn fab-instagram" title="Instagram">
+      <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 448 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"></path></svg>
+    </a>
+    <a href="https://wa.me/919100325489" target="_blank" class="fab-btn fab-whatsapp" title="WhatsApp Us">
+      <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 448 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zM223.9 414.8c-32 0-63.3-8.6-90.8-24.9l-6.5-3.8-67.4 17.7 18-65.6-4.2-6.7c-18.4-29.2-28.1-63.1-28.1-98.1 0-103.5 84.3-187.8 187.9-187.8 50.1 0 97.3 19.5 132.8 55.1 35.5 35.5 55.1 82.7 55.1 132.8-1 103.6-85.3 187.8-188.9 187.8zm103.4-141.2c-5.7-2.8-33.6-16.6-38.8-18.5-5.2-1.9-9-2.8-12.8 2.8-3.8 5.7-14.7 18.5-18 22.3-3.3 3.8-6.6 4.3-12.3 1.4-5.7-2.8-24-8.9-45.7-28.3-16.9-15.1-28.3-33.7-31.1-39.4-2.8-5.7-.3-8.8 2.5-11.6 2.5-2.6 5.7-6.6 8.5-9.9 2.8-3.3 3.8-5.7 5.7-9.5 1.9-3.8.9-7.1-.5-9.9-1.4-2.8-12.8-30.8-17.6-42.2-4.6-11-9.3-9.5-12.8-9.7-3.3-.2-7.1-.2-10.9-.2-3.8 0-10 1.4-15.2 7.1-5.2 5.7-20 19.5-20 47s20.4 54.1 23.2 57.9c2.8 3.8 39.4 60.1 95.5 84.3 13.4 5.8 23.8 9.2 31.9 11.8 13.4 4.3 25.6 3.7 35.3 2.2 11-1.7 33.6-13.7 38.3-27 4.7-13.3 4.7-24.7 3.3-27-1.4-2.4-5.2-3.8-10.9-6.6z"></path></svg>
+    </a>
+    <a href="tel:+919100325489" class="fab-btn fab-call" title="Call Us">
+      <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M493.4 24.6l-104-24c-11.3-2.6-22.9 3.3-27.5 13.9l-48 112c-4.2 9.8-1.4 21.3 6.9 28l60.6 49.6c-36 76.7-98.9 140.5-177.2 177.2l-49.6-60.6c-6.8-8.3-18.2-11.1-28-6.9l-112 48C3.9 366.5-2 378.1.6 389.4l24 104C27.1 504.2 36.7 512 48 512c256.1 0 464-207.5 464-464 0-11.2-7.7-20.9-18.6-23.4z"></path></svg>
+    </a>
+    <a href="#booking" class="fab-btn fab-book" title="Book Appointment">
+      <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M416 112V80c0-17.6-14.4-32-32-32H128c-17.6 0-32 14.4-32 32v32H48v352h416V112h-48zm-256-32h192v32H160V80zm240 384H112V144h288v320z"></path><path d="M160 192h192v32H160zM160 256h192v32H160zM160 320h192v32H160z"></path></svg>
+    </a>
+  </div>
+
+  <!-- Custom Calendar Logic -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+      
+      let currentDate = new Date();
+      currentDate.setHours(0,0,0,0);
+      
+      let viewingDate = new Date(currentDate); // Clone current date
+      let selectedDate = null;
+      
+      const calendarDaysGrid = document.getElementById("calendar-days");
+      const monthYearTitle = document.getElementById("calendar-month-year");
+      const dateInput = document.getElementById("selected-date-input");
+      
+      const timeslotsContainer = document.getElementById("timeslots-container");
+      const timeslotsGrid = document.getElementById("timeslots-grid");
+      const displaySelectedDate = document.getElementById("display-selected-date");
+      const timeInput = document.getElementById("selected-time-input");
+      
+      let selectedTimeElement = null;
+      
+      function renderCalendar() {
+        calendarDaysGrid.innerHTML = "";
+        
+        const year = viewingDate.getFullYear();
+        const month = viewingDate.getMonth();
+        
+        monthYearTitle.innerText = `${monthNames[month]} ${year}`;
+        
+        const firstDayOfMonth = new Date(year, month, 1).getDay();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+        
+        // Render empty slots for days before the 1st
+        for (let i = 0; i < firstDayOfMonth; i++) {
+          const emptyDiv = document.createElement("div");
+          emptyDiv.className = "calendar-day empty";
+          calendarDaysGrid.appendChild(emptyDiv);
+        }
+        
+        // Render actual days
+        for (let day = 1; day <= daysInMonth; day++) {
+          const dayDiv = document.createElement("div");
+          dayDiv.innerText = day;
+          dayDiv.className = "calendar-day";
+          
+          const thisDate = new Date(year, month, day);
+          
+          if (thisDate < currentDate) {
+            dayDiv.classList.add("past");
+          } else {
+            dayDiv.classList.add("available");
+            dayDiv.addEventListener("click", () => selectDate(thisDate, dayDiv));
+          }
+          
+          // Highlight today
+          if (thisDate.getTime() === currentDate.getTime()) {
+            dayDiv.classList.add("today");
+          }
+          
+          // Highlight selected date
+          if (selectedDate && thisDate.getTime() === selectedDate.getTime()) {
+            dayDiv.classList.add("selected");
+          }
+          
+          calendarDaysGrid.appendChild(dayDiv);
+        }
+      }
+      
+      async function selectDate(dateObj, element) {
+        selectedDate = dateObj;
+        
+        // Update input field
+        const formattedDate = `${dateObj.getDate()} ${monthNames[dateObj.getMonth()]} ${dateObj.getFullYear()}`;
+        dateInput.value = formattedDate;
+        dateInput.classList.remove("text-gold");
+        dateInput.classList.add("text-white", "bg-zinc-900", "border-gold");
+        
+        // Reset time selection
+        timeInput.value = "";
+        timeInput.classList.remove("text-white", "bg-zinc-900", "border-gold");
+        if (selectedTimeElement) selectedTimeElement.classList.remove("selected");
+        selectedTimeElement = null;
+        
+        // Remove 'selected' from all other days and add to this one
+        const allDays = calendarDaysGrid.querySelectorAll('.calendar-day');
+        allDays.forEach(day => day.classList.remove('selected'));
+        element.classList.add('selected');
+        
+        // Show Timeslots
+        displaySelectedDate.innerText = formattedDate;
+        timeslotsContainer.classList.remove("hidden");
+        timeslotsGrid.innerHTML = '<div class="text-zinc-500 text-xs text-center col-span-3 py-4 animate-pulse">Checking availability...</div>';
+        
+        try {
+          // Format date as YYYY-MM-DD for backend
+          const year = dateObj.getFullYear();
+          const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+          const day = String(dateObj.getDate()).padStart(2, '0');
+          const backendDateStr = `${year}-${month}-${day}`;
+          
+          // Fetch booked slots from backend
+          const API_URL = "http://localhost:8080/api/appointments/booked-slots";
+          const response = await fetch(`${API_URL}?date=${backendDateStr}`);
+          const result = await response.json();
+          
+          let bookedSlots = [];
+          if (result.success && result.bookedSlots) {
+             bookedSlots = result.bookedSlots.map(booking => booking.timeSlot);
+          }
+
+          // Generate Timeslots based on Working Hours
+          const dayOfWeek = dateObj.getDay(); // 0 is Sunday, 6 is Saturday
+          let startHour = 10;
+          let endHour = 20; // Last booking at 08:00 PM for 09:00 PM close
+          
+          if (dayOfWeek === 0 || dayOfWeek === 6) {
+             startHour = 9;
+             endHour = 21; // Last booking at 09:00 PM for 10:00 PM close
+          }
+
+          const dynamicTimeslots = [];
+          for (let h = startHour; h <= endHour; h++) {
+             let ampm = h >= 12 ? 'PM' : 'AM';
+             let displayHour = h > 12 ? h - 12 : h;
+             displayHour = String(displayHour).padStart(2, '0');
+             dynamicTimeslots.push(`${displayHour}:00 ${ampm}`);
+          }
+
+          timeslotsGrid.innerHTML = "";
+          dynamicTimeslots.forEach((time, index) => {
+            const slotDiv = document.createElement("div");
+            slotDiv.innerText = time;
+            slotDiv.className = "timeslot";
+            
+            // Check if slot is in the bookedSlots array from DB
+            // We check if the booked time string starts with our timeslot (to avoid 10am-11am triggering 11am)
+            const isBooked = bookedSlots.some(bookedTime => bookedTime.startsWith(time));
+            
+            if (isBooked) {
+              slotDiv.classList.add("booked");
+              slotDiv.title = "Already Booked";
+            } else {
+              slotDiv.classList.add("available");
+              slotDiv.addEventListener("click", () => {
+                if (selectedTimeElement) selectedTimeElement.classList.remove("selected");
+                slotDiv.classList.add("selected");
+                selectedTimeElement = slotDiv;
+                
+                timeInput.value = time;
+                timeInput.classList.add("text-white", "bg-zinc-900", "border-gold");
+              });
+            }
+            
+            timeslotsGrid.appendChild(slotDiv);
+          });
+        } catch (error) {
+           console.error("Error fetching booked slots:", error);
+           timeslotsGrid.innerHTML = '<div class="text-red-500 text-xs text-center col-span-3 py-4">Failed to load availability. Please try again.</div>';
+        }
+      }
+      
+      document.getElementById("prev-month").addEventListener("click", () => {
+        viewingDate.setMonth(viewingDate.getMonth() - 1);
+        renderCalendar();
+      });
+      
+      document.getElementById("next-month").addEventListener("click", () => {
+        viewingDate.setMonth(viewingDate.getMonth() + 1);
+        renderCalendar();
+      });
+      
+      // Initialize
+      renderCalendar();
+
+      // Form Submission Logic
+      const bookingForm = document.getElementById("booking-form");
+      const nameInput = document.getElementById("name-input");
+      const phoneInput = document.getElementById("phone-input");
+      const emailInput = document.getElementById("email-input");
+      const serviceInput = document.getElementById("service-input");
+      
+      bookingForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        
+        if (!selectedDate || !timeInput.value) {
+           alert("Please select a date and time slot first.");
+           return;
+        }
+
+        const name = nameInput.value.trim();
+        const phone = phoneInput.value.trim();
+        const email = emailInput.value.trim();
+        const service = serviceInput.value;
+        const timeSlot = timeInput.value;
+
+        // Format date for backend (YYYY-MM-DD)
+        const year = selectedDate.getFullYear();
+        const month = String(selectedDate.getMonth() + 1).padStart(2, '0');
+        const day = String(selectedDate.getDate()).padStart(2, '0');
+        const formattedDate = `${year}-${month}-${day}`;
+
+        if (!name || !phone || !email || service === "Select a service") {
+           alert("Please fill all required fields.");
+           return;
+        }
+
+        // Format the time slot string to match the backend expectation (e.g., "10:00 AM - 11:00 AM")
+        const [timePart, ampm] = timeSlot.split(" ");
+        const [hourStr] = timePart.split(":");
+        let nextHour = parseInt(hourStr) + 1;
+        let nextAmpm = ampm;
+        if (nextHour === 12) {
+           nextAmpm = ampm === "AM" ? "PM" : "AM";
+        } else if (nextHour > 12) {
+           nextHour -= 12;
+        }
+        const nextHourStr = String(nextHour).padStart(2, '0');
+        const fullTimeSlot = `${timeSlot} - ${nextHourStr}:00 ${nextAmpm}`;
+
+        const payload = {
+           name,
+           phone,
+           date: formattedDate,
+           timeSlot: fullTimeSlot,
+           service,
+           email: email
+        };
+
+        const submitBtn = bookingForm.querySelector('button[type="submit"]');
+        const originalText = submitBtn.innerText;
+        submitBtn.innerText = "Booking...";
+        submitBtn.disabled = true;
+
+        try {
+           const API_URL = "http://localhost:8080/api/appointments/book";
+           const response = await fetch(API_URL, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(payload)
+           });
+           
+           const data = await response.json();
+           
+           if (data.success) {
+              // Show Success Modal
+              const modal = document.getElementById('success-modal');
+              const modalBox = modal.querySelector('.transform');
+              modal.classList.remove('hidden');
+              setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                modalBox.classList.remove('scale-95');
+              }, 10);
+              
+              document.getElementById('close-modal-btn').addEventListener('click', () => {
+                 window.location.reload();
+              });
+           } else {
+              alert("Error: " + data.message);
+           }
+        } catch (error) {
+           console.error("Booking Error:", error);
+           alert("Failed to connect to the server. Please try again later.");
+        } finally {
+           submitBtn.innerText = originalText;
+           submitBtn.disabled = false;
+        }
+      });
+    });
+  </script>
+  <!-- Success Modal -->
+  <div id="success-modal" class="fixed inset-0 z-[200] flex items-center justify-center bg-black/80 backdrop-blur-sm hidden opacity-0 transition-opacity duration-300">
+    <div class="bg-zinc-950 border border-gold/50 p-8 rounded-sm shadow-[0_0_40px_rgba(212,175,55,0.2)] max-w-sm w-full mx-4 text-center transform scale-95 transition-transform duration-300">
+      <div class="w-16 h-16 rounded-full bg-gold/10 flex items-center justify-center mx-auto mb-4 border border-gold">
+        <span class="text-gold text-2xl">✓</span>
+      </div>
+      <h3 class="text-gold font-premium text-xl mb-2 tracking-wider">Booking Confirmed!</h3>
+      <p class="text-zinc-400 text-sm mb-6 leading-relaxed">
+        Your appointment has been successfully booked. We've sent the details to your email.
+      </p>
+      <button id="close-modal-btn" type="button" class="w-full bg-gold-gradient text-black font-bold uppercase text-xs tracking-widest py-3 rounded-sm shadow-md premium-transition hover:scale-[1.02] hover:shadow-[0_5px_15px_rgba(212,175,55,0.3)]">
+        Done
+      </button>
+    </div>
+  </div>
+
 </body>
 </html>

@@ -20,7 +20,13 @@ const allowedOrigins = [
 
 // Express HTTP CORS setup
 app.use(cors({
-  origin: allowedOrigins,
+  origin: function (origin, callback) {
+    if (!origin || origin.startsWith('http://localhost') || origin.startsWith('http://127.0.0.1') || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true
 }));
 
@@ -29,7 +35,13 @@ app.use(express.json());
 // Socket.io CORS setup
 const io = new Server(server, {
   cors: { 
-    origin: allowedOrigins,
+    origin: function (origin, callback) {
+      if (!origin || origin.startsWith('http://localhost') || origin.startsWith('http://127.0.0.1') || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
     methods: ["GET", "POST", "PUT", "DELETE"], // Better for all API calls
     credentials: true
   }

@@ -3,14 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Book Your Slot - Hair Magician</title>
+  <title>Contact & Book Slot | Hair Magician Unisex Salon</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/socket.io-client@4.7.5/dist/socket.io.min.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;500&display=swap" rel="stylesheet">
+  <!-- Scroll Animation Library -->
+  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+  <!-- Google Fonts for Premium Look -->
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@300;400;500;700&display=swap" rel="stylesheet">
   <style>
-    body { font-family: 'Montserrat', sans-serif; background-color: #0F0F0F; color: #FAF9F6; }
+    body { font-family: 'Montserrat', sans-serif; background-color: #0F0F0F; color: #FAF9F6; scroll-behavior: smooth; }
     .font-premium { font-family: 'Cinzel', serif; }
     .text-gold { color: #D4AF37; }
+    .border-gold { border-color: #D4AF37; }
     .bg-gold-gradient { background: linear-gradient(135deg, #BF953F 0%, #FCF6BA 25%, #B38728 50%, #FBF5B7 75%, #AA771C 100%); }
     
     /* Custom Calendar Utility Classes */
@@ -23,19 +27,94 @@
     .slot-booked { background-color: #ef4444 !important; opacity: 0.5; cursor: not-allowed; }
   </style>
 </head>
-<body class="p-6 md:p-12">
+<body class="overflow-x-hidden pt-24 md:pt-28">
 
-  <div class="max-w-7xl mx-auto">
-    <a href="index.html" class="text-gold tracking-widest text-sm hover:underline">← Back to Home</a>
-    <h1 class="text-4xl font-premium text-gold text-center my-10 tracking-widest">Reserve Your Magical Experience</h1>
-
-    <!-- 2 Column Master Layout -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+  <!-- 1. HEADER / NAVIGATION (Consistent Layout) -->
+  <header class="fixed top-0 left-0 w-full z-50 bg-black/95 border-b border-zinc-900 backdrop-blur-md transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-24 flex items-center justify-between">
       
-      <!-- LEFT COLUMN: Custom Calendar & Time Slots -->
-      <div class="bg-zinc-950 border border-zinc-800 p-6 rounded-sm space-y-8 shadow-xl">
-        
-        <!-- Premium Inline Calendar Component -->
+      <!-- LOGO AREA -->
+      <a href="index.html" class="flex items-center group">
+        <div class="w-16 h-16 rounded-full overflow-hidden border border-gold/50 flex items-center justify-center bg-zinc-950 shadow-[0_0_15px_rgba(212,175,55,0.1)]">
+          <img src="logo.png" alt="Hair Magician" class="w-full h-full object-cover">
+        </div>
+      </a>
+
+      <!-- DESKTOP MENU LINKS -->
+      <nav class="hidden lg:flex items-center space-x-8 text-xs uppercase tracking-widest font-medium">
+        <a href="index.html" class="text-zinc-300 hover:text-gold transition">Home</a>
+        <a href="about.html" class="text-zinc-300 hover:text-gold transition">About</a>
+        <a href="services.html" class="text-zinc-300 hover:text-gold transition">Services</a>
+        <a href="gallery.html" class="text-zinc-300 hover:text-gold transition">Gallery</a>
+        <a href="pricing.html" class="text-zinc-300 hover:text-gold transition">Pricing</a>
+        <a href="contact.html" class="text-gold font-medium">Book Appointment</a>
+        <a href="#contact-footer" class="text-zinc-300 hover:text-gold transition">Contact</a>
+      </nav>
+
+      <!-- STICKY CTA BUTTON + PHONE NUMBER -->
+      <div class="hidden sm:flex items-center space-x-6">
+        <a href="tel:+919100325489" class="text-zinc-400 hover:text-gold transition text-xs font-semibold flex items-center space-x-2">
+          <span class="text-gold text-sm">📞</span>
+          <span class="tracking-wider">+91 9100325489</span>
+        </a>
+        <a href="#booking-section" class="bg-gold-gradient text-black font-bold uppercase text-xs tracking-widest px-6 py-3 rounded-sm hover:opacity-95 transition shadow-[0_4px_20px_rgba(176,135,40,0.3)]">
+          Book Now
+        </a>
+      </div>
+
+      <!-- MOBILE HAMBURGER BUTTON -->
+      <div class="lg:hidden flex items-center space-x-4">
+        <a href="tel:+919100325489" class="sm:hidden text-gold text-lg">📞</a>
+        <button id="menu-btn" class="text-gold focus:outline-none" aria-label="Toggle Menu">
+          <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- MOBILE DROPDOWN MENU -->
+    <div id="mobile-menu" class="hidden lg:hidden bg-zinc-950 border-b border-zinc-900 px-6 py-6 space-y-4 text-sm uppercase tracking-widest">
+      <a href="index.html" class="block text-zinc-300 hover:text-gold">Home</a>
+      <a href="about.html" class="block text-zinc-300 hover:text-gold">About</a>
+      <a href="services.html" class="block text-zinc-300 hover:text-gold">Services</a>
+      <a href="gallery.html" class="block text-zinc-300 hover:text-gold">Gallery</a>
+      <a href="pricing.html" class="block text-zinc-300 hover:text-gold">Pricing</a>
+      <a href="contact.html" class="block text-gold font-medium">Book Appointment</a>
+      <a href="#contact-footer" class="block text-zinc-300 hover:text-gold">Contact</a>
+      <div class="pt-4 border-t border-zinc-900 flex flex-col space-y-3">
+        <a href="tel:+919100325489" class="text-zinc-400 text-xs font-semibold">📞 +91 9100325489</a>
+        <a href="#booking-section" class="bg-gold-gradient text-black font-semibold uppercase text-xs tracking-widest py-3 text-center rounded-sm">Book Now</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- 2. PAGE BANNER -->
+  <section class="relative h-64 bg-zinc-950 flex flex-col justify-center items-center text-center overflow-hidden border-b border-zinc-900">
+    <div data-aos="zoom-out" data-aos-duration="1500" class="absolute inset-0 bg-cover bg-center opacity-20" style="background-image: url('https://images.unsplash.com/photo-1560066984-138dadb4c035?q=80&w=1200&auto=format&fit=crop');"></div>
+    <div data-aos="fade-up" class="relative z-10 space-y-2">
+      <h1 class="text-4xl md:text-5xl font-premium text-gold tracking-wider uppercase">Contact & Book Slot</h1>
+      <div class="text-xs tracking-widest text-zinc-400 uppercase">
+        <a href="index.html" class="hover:text-gold transition">Home</a> <span class="mx-2 text-zinc-600">&gt;</span> <span class="text-gold">Contact</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. CONTACT INTRO -->
+  <section class="py-12 px-6 max-w-4xl mx-auto text-center" data-aos="fade-up">
+    <p class="text-zinc-300 text-lg font-light leading-relaxed">
+      Get in touch with our concierge team or reserve your premium transformational structural time loop slot instantly.
+    </p>
+  </section>
+
+  <!-- 4. TWO-COLUMN LAYOUT -->
+  <main id="booking-section" class="py-12 px-6 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+    
+    <!-- LEFT COLUMN: Contact Details & Calendar Logic -->
+    <div class="lg:col-span-7 space-y-12">
+      
+      <!-- Interactive Salon Calendar Component -->
+      <div data-aos="fade-right" data-aos-duration="1000" class="bg-zinc-950 border border-zinc-800 p-6 rounded-sm space-y-8 shadow-xl">
         <div>
           <div class="flex justify-between items-center mb-6">
             <h2 id="currentMonthYear" class="text-xl font-premium text-gold tracking-wider">July 2026</h2>
@@ -45,120 +124,189 @@
             </div>
           </div>
 
-          <!-- Weekdays Row -->
           <div class="grid grid-cols-7 gap-2 text-center text-xs font-bold text-zinc-500 mb-2">
             <div>SU</div><div>MO</div><div>TU</div><div>WE</div><div>TH</div><div>FR</div><div>SA</div>
           </div>
 
-          <!-- Days Dynamic Grid -->
-          <div id="calendarDaysGrid" class="grid grid-cols-7 gap-2">
-            <!-- Dynamically populated by JS -->
-          </div>
+          <div id="calendarDaysGrid" class="grid grid-cols-7 gap-2"></div>
 
-          <!-- Status Indicators List -->
           <div class="flex flex-wrap gap-4 text-xs text-zinc-400 mt-6 border-t border-zinc-900 pt-4">
             <div class="flex items-center space-x-1"><span class="w-3 h-3 bg-zinc-800 border border-zinc-700 rounded-sm"></span> <span>Available</span></div>
             <div class="flex items-center space-x-1"><span class="w-3 h-3 border-2 border-red-500 rounded-sm"></span> <span>Today</span></div>
             <div class="flex items-center space-x-1"><span class="w-3 h-3 bg-gold-gradient rounded-sm"></span> <span>Selected</span></div>
-            <div class="flex items-center space-x-1"><span class="w-3 h-3 bg-zinc-900 opacity-40 rounded-sm line-through"></span> <span>Past (Unavailable)</span></div>
+            <div class="flex items-center space-x-1"><span class="w-3 h-3 bg-zinc-900 opacity-40 rounded-sm line-through"></span> <span>Past</span></div>
           </div>
         </div>
 
-        <!-- Dynamic Time Slots Container -->
         <div>
           <h3 class="text-md font-premium text-gold mb-3">Select Available Time Slot</h3>
           <div id="slotsContainer" class="grid grid-cols-2 gap-3">
             <p class="text-zinc-500 text-xs italic col-span-2">Please select a date from the calendar to see slots.</p>
           </div>
         </div>
-
-        <!-- Feature Information Points Box -->
-        <div class="border-t border-zinc-800 pt-6 space-y-3 text-sm text-zinc-400">
-          <div class="flex items-center space-x-3">
-            <span class="text-gold text-lg">🕒</span>
-            <p>1-hour premium personalized styling - no rush session</p>
-          </div>
-          <div class="flex items-center space-x-3">
-            <span class="text-gold text-lg">✨</span>
-            <p>100% Satisfaction Guarantee - customize your look on the go</p>
-          </div>
-          <div class="flex items-center space-x-3">
-            <span class="text-gold text-lg">👑</span>
-            <p>Complimentary luxury hair wash & beverage included</p>
-          </div>
-          <div class="flex items-center space-x-3">
-            <span class="text-gold text-lg">📍</span>
-            <p>Premium Studio Location (Delhi/NCR) - VIP Private Rooms available</p>
-          </div>
-        </div>
-
       </div>
 
-      <!-- RIGHT COLUMN: Booking Details Form -->
-      <div class="bg-zinc-950 border border-zinc-800 p-6 md:p-8 rounded-sm shadow-xl">
-        <h2 class="text-xl font-premium text-gold mb-6">Enter Booking Information</h2>
+      <!-- Quick Info Points Matrix -->
+      <div data-aos="fade-up" data-aos-duration="1000" class="grid grid-cols-1 sm:grid-cols-2 gap-6 bg-black border border-zinc-900 p-6 rounded-sm">
+        <div class="space-y-2">
+          <h4 class="font-premium text-gold text-md">Lounge Location</h4>
+          <p class="text-zinc-400 text-xs font-light leading-relaxed">Hair Magician Unisex Salon, Premium Luxury Hub, Main Ring Road, Delhi, India.</p>
+          <a href="https://maps.google.com" target="_blank" class="text-gold text-xs underline block font-medium">Get Directions &rarr;</a>
+        </div>
+        <div class="space-y-2">
+          <h4 class="font-premium text-gold text-md">Direct Contact</h4>
+          <p class="text-zinc-400 text-xs block">📞 Phone: <a href="tel:+919100325489" class="text-white hover:text-gold transition">+91 9100325489</a></p>
+          <p class="text-zinc-400 text-xs block">💬 WhatsApp: <a href="https://wa.me/919100325489" target="_blank" class="text-green-500 hover:underline">Chat Live</a></p>
+          <p class="text-zinc-400 text-xs block">✉️ Email: <a href="mailto:info@hairmagician.com" class="text-white hover:text-gold transition">info@hairmagician.com</a></p>
+        </div>
+        <div class="sm:col-span-2 space-y-2 border-t border-zinc-900 pt-4">
+          <h4 class="font-premium text-gold text-md">Lounge Working Timings</h4>
+          <p class="text-zinc-400 text-xs font-light">Mon - Fri: 10:00 AM - 09:00 PM | Sat - Sun: 09:00 AM - 10:00 PM <span class="text-zinc-600 font-bold block mt-1">*Open all 7 days for your luxury convenience.</span></p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT COLUMN: Appointment/Enquiry Form -->
+    <div class="lg:col-span-5" data-aos="fade-left" data-aos-duration="1200">
+      <div class="bg-zinc-950 border border-zinc-800 p-6 md:p-8 rounded-sm shadow-xl space-y-6">
+        <h2 class="text-xl font-premium text-gold">Enter Booking Information</h2>
         
-        <form id="bookingForm" class="space-y-5">
+        <form id="bookingForm" class="space-y-4">
           <div>
-            <label class="block text-zinc-400 text-xs uppercase tracking-widest mb-2">Selected Date & Slot</label>
+            <label class="block text-zinc-500 text-[10px] uppercase tracking-widest mb-1.5 font-semibold">Selected Date & Slot</label>
             <input type="text" id="displaySelectedDetails" readOnly placeholder="No date selected yet" 
-                   class="w-full bg-zinc-900 border border-zinc-800 rounded p-3 text-gold font-bold text-sm outline-none">
+                   class="w-full bg-zinc-900 border border-zinc-800 rounded p-3 text-gold font-bold text-xs outline-none">
           </div>
           <div>
-            <label class="block text-zinc-400 text-xs uppercase tracking-widest mb-2">Full Name *</label>
+            <label class="block text-zinc-500 text-[10px] uppercase tracking-widest mb-1.5 font-semibold">Full Name *</label>
             <input type="text" id="userName" required placeholder="Enter full name" 
-                   class="w-full bg-zinc-900 border border-zinc-700 rounded p-3 text-white focus:border-gold outline-none text-sm">
+                   class="w-full bg-zinc-900 border border-zinc-800 text-white rounded p-3 focus:border-gold outline-none text-xs transition">
           </div>
           <div>
-            <label class="block text-zinc-400 text-xs uppercase tracking-widest mb-2">Phone Number *</label>
+            <label class="block text-zinc-500 text-[10px] uppercase tracking-widest mb-1.5 font-semibold">Phone Number *</label>
             <input type="tel" id="userPhone" required placeholder="98765 43210" 
-                   class="w-full bg-zinc-900 border border-zinc-700 rounded p-3 text-white focus:border-gold outline-none text-sm">
+                   class="w-full bg-zinc-900 border border-zinc-800 text-white rounded p-3 focus:border-gold outline-none text-xs transition">
           </div>
           <div>
-            <label class="block text-zinc-400 text-xs uppercase tracking-widest mb-2">Email Address *</label>
+            <label class="block text-zinc-500 text-[10px] uppercase tracking-widest mb-1.5 font-semibold">Email Address *</label>
             <input type="email" id="userEmail" required placeholder="you@email.com" 
-                   class="w-full bg-zinc-900 border border-zinc-700 rounded p-3 text-white focus:border-gold outline-none text-sm">
+                   class="w-full bg-zinc-900 border border-zinc-800 text-white rounded p-3 focus:border-gold outline-none text-xs transition">
           </div>
           <div>
-            <label class="block text-zinc-400 text-xs uppercase tracking-widest mb-2">Select Service *</label>
-            <select id="userService" required class="w-full bg-zinc-900 border border-zinc-700 rounded p-3 text-white focus:border-gold outline-none text-sm">
+            <label class="block text-zinc-500 text-[10px] uppercase tracking-widest mb-1.5 font-semibold">Select Service Interested In *</label>
+            <select id="userService" required class="w-full bg-zinc-900 border border-zinc-800 text-white rounded p-3 focus:border-gold outline-none text-xs transition">
               <option value="Hair Wizardry">Hair Wizardry (Styling & Magic Color)</option>
               <option value="Luxury Grooming">Luxury Grooming & Spa Treatments</option>
               <option value="Unisex Complete Combo">Unisex Luxury Makeover Combo</option>
+              <option value="Skin Aesthetics">Skin Aesthetics & Hydra-Facial</option>
             </select>
           </div>
+          <div>
+            <label class="block text-zinc-500 text-[10px] uppercase tracking-widest mb-1.5 font-semibold">Special Instructions (Optional)</label>
+            <textarea id="userMessage" rows="3" placeholder="Any specific requirements..." 
+                      class="w-full bg-zinc-900 border border-zinc-800 text-white rounded p-3 focus:border-gold outline-none text-xs transition"></textarea>
+          </div>
 
-          <button type="submit" class="w-full bg-gold-gradient text-black font-bold uppercase tracking-widest py-4 rounded-sm transition transform hover:scale-[1.01] text-sm mt-4 shadow-lg">
+          <button type="submit" class="w-full bg-gold-gradient text-black font-bold uppercase tracking-widest py-4 rounded-sm hover:opacity-90 transition text-xs shadow-lg font-medium">
             Confirm Booking Experience
           </button>
         </form>
       </div>
-
     </div>
+  </main>
+
+  <!-- 5. EMBEDDED GOOGLE MAP -->
+  <section class="w-full h-96 bg-zinc-900 border-t border-b border-zinc-900 overflow-hidden relative" data-aos="fade-up" data-aos-duration="1000">
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d224346.4812241197!2d77.06889754407872!3d28.527280343867664!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cfd5b347eb62d%3A0x37205b715389640!2sDelhi!5e0!3m2!1sen!2sin!4v1710000000000!5m2!1sen!2sin" class="w-full h-full border-0 opacity-60 invert contrast-125" allowfullscreen="" loading="lazy"></iframe>
+  </section>
+
+  <!-- 7. FAQ SECTION (Interactive Accordions) -->
+  <section class="py-25 max-w-4xl mx-auto px-6" data-aos="fade-up" data-aos-duration="1000">
+    <div class="text-center mb-12">
+      <h2 class="text-2xl font-premium text-gold tracking-wide uppercase">Frequently Asked Questions</h2>
+    </div>
+    <div class="space-y-4">
+      <div class="border border-zinc-800 bg-zinc-950 p-4 rounded-sm cursor-pointer" onclick="toggleFaq(this)">
+        <div class="flex justify-between items-center"><h5 class="text-sm font-medium text-white tracking-wide">Are walk-ins accepted?</h5><span class="text-gold text-sm">+</span></div>
+        <p class="text-zinc-400 text-xs font-light mt-3 hidden transition-all">We highly recommend booking slots online in advance to enjoy zero wait matrix, but walk-ins are welcomed subject to resource availability.</p>
+      </div>
+      <div class="border border-zinc-800 bg-zinc-950 p-4 rounded-sm cursor-pointer" onclick="toggleFaq(this)">
+        <div class="flex justify-between items-center"><h5 class="text-sm font-medium text-white tracking-wide">Is dedicated parking space available?</h5><span class="text-gold text-sm">+</span></div>
+        <p class="text-zinc-400 text-xs font-light mt-3 hidden transition-all">Yes, we provide safe, complimentary structural valet and reserved customer parking directly in front of the lounge space.</p>
+      </div>
+      <div class="border border-zinc-800 bg-zinc-950 p-4 rounded-sm cursor-pointer" onclick="toggleFaq(this)">
+        <div class="flex justify-between items-center"><h5 class="text-sm font-medium text-white tracking-wide">What payment modes do you accept?</h5><span class="text-gold text-sm">+</span></div>
+        <p class="text-zinc-400 text-xs font-light mt-3 hidden transition-all">We accept all major International Credit/Debit Cards, UPI Transfers, digital wallets, and traditional cash modes securely.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. CALL-TO-ACTION BANNER -->
+  <section class="py-20 text-center px-6 max-w-4xl mx-auto space-y-6">
+    <h2 data-aos="fade-up" class="text-3xl md:text-4xl font-premium text-gold tracking-wide uppercase">We'd Love to See You</h2>
+    <p class="text-zinc-400 text-sm max-w-md mx-auto font-light leading-relaxed">Step inside our luxury architecture lounge spaces and let our artisans engineer the magic.</p>
+    <a data-aos="zoom-in" href="#booking-section" class="bg-gold-gradient text-black font-bold uppercase text-xs tracking-widest px-8 py-4 rounded-sm inline-block shadow-lg hover:opacity-90 transition">Visit or Book Today</a>
+  </section>
+
+  <!-- 6. QUICK ACTIONS FLOATING BAR -->
+  <div class="fixed bottom-4 left-1/2 transform -translate-x-1/2 bg-black/90 border border-zinc-800 px-6 py-3 rounded-full flex space-x-6 z-40 backdrop-blur-md shadow-2xl text-xs uppercase tracking-widest font-semibold text-zinc-300">
+    <a href="tel:+919100325489" class="hover:text-gold transition flex items-center space-x-1"><span>📞</span> <span class="hidden sm:inline">Call Now</span></a>
+    <span class="text-zinc-800">|</span>
+    <a href="https://wa.me/919100325489" target="_blank" class="hover:text-green-500 transition flex items-center space-x-1"><span>💬</span> <span class="hidden sm:inline">WhatsApp</span></a>
+    <span class="text-zinc-800">|</span>
+    <a href="https://maps.google.com" target="_blank" class="hover:text-gold transition flex items-center space-x-1"><span>📍</span> <span class="hidden sm:inline">Directions</span></a>
   </div>
 
   <!-- Real-time Alerts Popup Container -->
-  <div id="notificationToast" class="fixed bottom-5 right-5 bg-zinc-900 border border-gold text-white px-6 py-4 rounded shadow-2xl hidden z-50 transition-all duration-300">
+  <div id="notificationToast" class="fixed bottom-20 right-5 bg-zinc-900 border border-gold text-white px-6 py-4 rounded shadow-2xl hidden z-50 transition-all duration-300">
     <p class="text-gold font-bold font-premium">Real-time Alert!</p>
     <p id="toastMessage" class="text-sm font-light mt-1"></p>
   </div>
 
-  <!-- 🌟 ADDED: Premium Confirmation Modal Layer -->
+  <!-- Premium Confirmation Modal Layer -->
   <div id="successModal" class="fixed inset-0 bg-black/80 flex items-center justify-center hidden z-50 p-4">
-    <div class="bg-zinc-950 border-2 border-[#D4AF37] p-8 rounded-sm max-w-md w-full text-center shadow-2xl relative animate-fade-in">
+    <div class="bg-zinc-950 border-2 border-[#D4AF37] p-8 rounded-sm max-w-md w-full text-center shadow-2xl relative">
       <div class="text-4xl mb-4">✨</div>
       <h3 class="text-2xl font-premium text-gold tracking-widest mb-3">Booking Confirmed!</h3>
-      <p class="text-zinc-400 text-sm font-light leading-relaxed mb-6">
-       Your appointment has been successfully confirmed! A confirmation email containing all the details has been sent to your registered email address.
-      </p>
-      <button id="closeModalBtn" type="button" class="w-full bg-gold-gradient text-black font-bold uppercase tracking-widest py-3 rounded-sm text-xs hover:scale-[1.01] transition transform shadow-md outline-none">
-        OK
-      </button>
+      <p class="text-zinc-400 text-sm font-light leading-relaxed mb-6">Your appointment request has been successfully saved. A summary configuration notification has been routed.</p>
+      <button id="closeModalBtn" type="button" class="w-full bg-gold-gradient text-black font-bold uppercase tracking-widest py-3 rounded-sm text-xs hover:scale-[1.01] transition transform shadow-md outline-none">OK</button>
     </div>
   </div>
 
-  <!-- Scripts Sequence Binding -->
+  <!-- 9. FOOTER -->
+  <footer id="contact-footer" class="bg-zinc-950 border-t border-zinc-900 py-12 px-6 text-center text-xs text-zinc-600">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-6">
+      <p class="font-premium text-gold tracking-widest text-sm">HAIR MAGICIAN UNISEX SALON</p>
+      <div class="flex space-x-6 text-zinc-400">
+        <a href="services.html#hair-services" class="hover:text-gold transition">Services</a>
+        <a href="#booking-section" class="hover:text-gold transition">Book Appointment</a>
+        <a href="https://www.instagram.com/hair_magician_unisex_salon/" target="_blank" class="hover:text-gold transition">Instagram</a>
+      </div>
+      <p>&copy; 2026 Hair Magician Salon. Engineered for Excellence.</p>
+    </div>
+  </footer>
+
+  <!-- Interactive Controls JavaScript Setup -->
+  <script>
+    const menuBtn = document.getElementById('menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    menuBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+
+    function toggleFaq(card) {
+      const textBlock = card.querySelector('p');
+      const operator = card.querySelector('span');
+      textBlock.classList.toggle('hidden');
+      operator.textContent = textBlock.classList.contains('hidden') ? '+' : '−';
+    }
+  </script>
+
+  <!-- Script Sequences Binding -->
   <script src="config.js"></script>
   <script src="booke.js"></script>
+  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+  <script>
+    AOS.init({ duration: 1000, once: true });
+  </script>
 </body>
 </html>
