@@ -121,7 +121,8 @@ async function fetchBookedSlotsForDate(dateString) {
     }
     renderTimeSlotsUI(bookedTimeStrings);
   } catch (err) {
-    container.innerHTML = `<p class="text-red-500 text-xs col-span-2">Error loading slots.</p>`;
+    console.warn("Backend not available, defaulting to all slots open.");
+    renderTimeSlotsUI([]);
   }
 }
 
@@ -136,7 +137,7 @@ function renderTimeSlotsUI(bookedSlots = []) {
     btn.innerText = slot;
     btn.className = "p-3 border text-xs text-center rounded transition border-zinc-700 hover:border-gold text-white";
 
-    if (bookedSlots.includes(slot)) {
+    if (bookedSlots.some(b => slot.startsWith(b.split(' - ')[0]) || b.startsWith(slot.split(' - ')[0]))) {
       btn.classList.add('slot-booked');
       btn.disabled = true;
     } else {

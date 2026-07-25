@@ -1,21 +1,11 @@
 import Appointment from '../models/appointment.modles.js';
-import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
 dotenv.config(); // .env file se environment variables load karne ke liye
-
-// ================= Nodemailer (Email) Setup =================
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: process.env.EMAIL_USER || 'manishedit78@gmail.com', // Aapka Gmail address
-    pass: process.env.EMAIL_PASS || 'briucscmijksahgu' // Google Account se generate kiya hua 16-digit App Password
-  }
-});
 
 // 1. Check Availability, Book Appointment & Send Email
 export const bookAppointment = async (req, res) => {
   try {
-    const { name, phone, email, date, timeSlot, service } = req.body;
+    const { name, phone, date, timeSlot, service } = req.body;
 
     // Check if slot is already taken
     const existingAppointment = await Appointment.findOne({ date, timeSlot });
@@ -24,23 +14,8 @@ export const bookAppointment = async (req, res) => {
     }
 
     // Save appointment to Database
-    const newAppointment = new Appointment({ name, phone, email, date, timeSlot, service });
+    const newAppointment = new Appointment({ name, phone, date, timeSlot, service });
     await newAppointment.save();
-
-    // 📩 Nodemailer Email Logic
-    if (email) {
-      const mailOptions = {
-        from: process.env.EMAIL_USER || 'YOUR_GMAIL@gmail.com',
-        to: email, // User ka email account (req.body se)
-        subject: 'Appointment Booked Successfully! 🎉',
-        text: `Hello ${name},\n\nAapki appointment successfully confirm ho gayi hai!\n\n📋 Details:\n- Service: ${service}\n- Date: ${date}\n- Time Slot: ${timeSlot}\n\nThank you for choosing our service!`,
-      };
-
-      // `.catch()` lagaya hai taaki agar email send failure ho, toh main API request crash na ho
-      transporter.sendMail(mailOptions)
-        .then(() => console.log(`Confirmation email sent to ${email}`))
-        .catch(err => console.log("Nodemailer Error:", err.message));
-    }
 
     // Socket.io real-time alert (Dashboard update ke liye)
     const io = req.app.get('socketio');
@@ -50,7 +25,7 @@ export const bookAppointment = async (req, res) => {
 
     return res.status(201).json({ 
       success: true, 
-      message: 'Appointment successfully book ho gayi hai aur email bhej diya gaya hai!', 
+      message: 'Appointment successfully book ho gayi hai!', 
       data: newAppointment 
     });
 
