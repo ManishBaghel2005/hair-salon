@@ -1,48 +1,236 @@
-<!DOCTYPE html><html lang="en"><head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Admin Dashboard - Hair Magician Console</title> <script src="https://cdn.tailwindcss.com"></script> <script src="https://cdn.jsdelivr.net/npm/socket.io-client@4.7.5/dist/socket.io.min.js"></script> <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Montserrat:wght@300;500;700&display=swap" rel="stylesheet"> <style> body { font-family: 'Montserrat', sans-serif; background-color: #0F0F0F; color: #FAF9F6; } .font-premium { font-family: 'Cinzel', serif; } .text-gold { color: #D4AF37; } .bg-gold-gradient { background: linear-gradient(135deg, #BF953F 0%, #FCF6BA 25%, #B38728 50%, #FBF5B7 75%, #AA771C 100%); } .live-pulse { animation: pulse 2s infinite; } @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .4; } }    .hover\:bg-theme-gold { transition: background-color 0.4s ease, color 0.4s ease !important; }
-    .hover\:bg-theme-gold:hover { background-color: #cca054 !important; color: #000000 !important; }
-  </style> <script> // Pure page render hone se pehle hi check kar lo token hai ya nahi if (!localStorage.getItem('adminToken')) { window.location.href = 'login.html'; } </script></head><body class="p-6 md:p-12"> <div class="max-w-7xl mx-auto"> <!-- Header Controls --> <header class="flex flex-col md:flex-row justify-between items-center border-b border-zinc-800 pb-6 mb-10 gap-4"> <div> <h1 class="text-3xl font-premium text-gold tracking-widest">HAIR MAGICIAN CONTROL PANEL</h1> <p class="text-xs text-zinc-500 mt-1 flex items-center"> <span class="w-2 h-2 bg-green-500 rounded-full inline-block mr-2 live-pulse"></span> Live Relational Database Socket Sync Active </p> </div> <!-- Action Panel Container (No duplication, clean grid alignment) --> <div class="flex items-center space-x-3 w-full md:w-auto justify-end"> <!-- Date Filter Engine --> <div class="flex items-center space-x-2 bg-zinc-950 border border-zinc-800 p-2 rounded-sm"> <label for="filterDate" class="text-[10px] text-zinc-400 uppercase tracking-wider pl-1">Filter Date:</label> <input type="date" id="filterDate" class="bg-zinc-900 border border-zinc-700 rounded p-1.5 text-white text-xs outline-none focus:border-gold"> <button id="clearFilter" class="text-xs text-zinc-500 hover:text-gold transition px-2">Clear</button> </div> <!-- Logout Trigger Button --> <button id="logoutBtn" class="bg-red-950/40 border border-red-900 text-red-400 text-xs uppercase tracking-wider px-4 py-2.5 rounded-sm hover:bg-red-900 hover:text-white transition"> Logout </button> </div> </header> <!-- Stats Counters Grid --> <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10"> <div class="bg-zinc-950 border border-zinc-800 p-6 rounded-sm"> <p class="text-xs text-zinc-500 uppercase tracking-widest">Total Reservations</p> <p id="statTotal" class="text-3xl font-bold text-gold mt-2">0</p> </div> <div class="bg-zinc-950 border border-zinc-800 p-6 rounded-sm"> <p class="text-xs text-zinc-500 uppercase tracking-widest">Today's Load</p> <p id="statToday" class="text-3xl font-bold text-white mt-2">0</p> </div> <div class="bg-zinc-950 border border-zinc-800 p-6 rounded-sm"> <p class="text-xs text-zinc-500 uppercase tracking-widest">Active System Sockets</p> <p class="text-3xl font-bold text-green-400 mt-2">1 Connected</p> </div> </div> <!-- Main Data Table Container --> <div class="bg-zinc-950 border border-zinc-800 rounded-sm overflow-hidden shadow-2xl"> <div class="p-5 border-b border-zinc-900 bg-zinc-900/50 flex justify-between items-center"> <h2 class="text-sm font-premium text-gold uppercase tracking-wider">Appointment Logs Ledger</h2> <span id="tableStatus" class="text-xs text-zinc-400">Loading live streams...</span> </div> <div class="overflow-x-auto"> <table class="w-full text-left border-collapse"> <thead> <tr class="border-b border-zinc-800 text-zinc-500 text-xs uppercase tracking-wider bg-zinc-950"> <th class="p-4 font-medium">Client</th> <th class="p-4 font-medium">Contact Details</th> <th class="p-4 font-medium">Service Requested</th> <th class="p-4 font-medium">Execution Date</th> <th class="p-4 font-medium">Time Slot</th> <th class="p-4 font-medium text-right">Database State</th> </tr> </thead> <tbody id="adminTableBody" class="text-sm divide-y divide-zinc-900"> <!-- Dynamic Table Rows Will Be Injected Here --> </tbody> </table> </div> <!-- Empty State View --> <div id="emptyState" class="p-10 text-center text-zinc-600 hidden"> No active booking logs found for the selected query parameter filters. </div> </div> </div> <!-- Script Initializers Linking Chain --> <script src="config.js"></script> <script src="admin.js"></script>
-  <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      const scrollToTopBtn = document.getElementById('scrollToTopBtn');
-      if(scrollToTopBtn) {
-        window.addEventListener('scroll', () => {
-          if (window.scrollY > 300) {
-            scrollToTopBtn.style.display = 'flex';
-          } else {
-            scrollToTopBtn.style.display = 'none';
-          }
-        });
-        scrollToTopBtn.addEventListener('click', (e) => {
-          e.preventDefault();
-          
-          const duration = 3000; // 3 seconds for a very slow, premium glide // 1.2 seconds for a slow, premium glide
-          const startPosition = window.pageYOffset;
-          let startTime = null;
-
-          function easeInOutCubic(t, b, c, d) {
-            t /= d / 2;
-            if (t < 1) return (c / 2) * t * t * t + b;
-            t -= 2;
-            return (c / 2) * (t * t * t + 2) + b;
-          }
-
-          function animation(currentTime) {
-            if (startTime === null) startTime = currentTime;
-            const timeElapsed = currentTime - startTime;
-            const run = easeInOutCubic(timeElapsed, startPosition, -startPosition, duration);
-            
-            window.scrollTo(0, run);
-            
-            if (timeElapsed < duration) {
-              requestAnimationFrame(animation);
-            } else {
-              window.scrollTo(0, 0);
-            }
-          }
-          
-          requestAnimationFrame(animation);
-        });
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard - Hair Magician Console</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/socket.io-client@4.7.5/dist/socket.io.min.js"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Montserrat:wght@300;500;700&display=swap"
+      rel="stylesheet"
+    />
+    
+    <script>
+      // Pure page render hone se pehle hi check kar lo token hai ya nahi
+      if (!localStorage.getItem("adminToken")) {
+        window.location.href = "login.html";
       }
-    });
-  </script>
-</body></html>
+    </script>
+  </head>
+  <body class="p-6 md:p-12">
+    <div class="max-w-7xl mx-auto">
+      <!-- Header Controls -->
+      <header
+        class="flex flex-col md:flex-row justify-between items-center border-b border-zinc-800 pb-6 mb-10 gap-4"
+      >
+        <div>
+          <h1
+            data-aos="fade-up"
+            data-aos-duration="800"
+            class="text-3xl font-premium text-gold tracking-widest"
+          >
+            HAIR MAGICIAN CONTROL PANEL
+          </h1>
+          <p class="text-xs text-zinc-500 mt-1 flex items-center">
+            <span
+              class="w-2 h-2 bg-green-500 rounded-full inline-block mr-2 live-pulse"
+            ></span>
+            Live Relational Database Socket Sync Active
+          </p>
+        </div>
+        <!-- Action Panel Container (No duplication, clean grid alignment) -->
+        <div class="flex items-center space-x-3 w-full md:w-auto justify-end">
+          <!-- Date Filter Engine -->
+          <div
+            class="flex items-center space-x-2 bg-zinc-950 border border-zinc-800 p-2 rounded-sm"
+          >
+            <label
+              for="filterDate"
+              class="text-[10px] text-zinc-400 uppercase tracking-wider pl-1"
+              >Filter Date:</label
+            >
+            <input
+              type="date"
+              id="filterDate"
+              class="bg-zinc-900 border border-zinc-700 rounded p-1.5 text-white text-xs outline-none focus:border-gold"
+            />
+            <button
+              id="clearFilter"
+              class="text-xs text-zinc-500 hover:text-gold transition px-2"
+            >
+              Clear
+            </button>
+          </div>
+          <!-- Logout Trigger Button -->
+          <button
+            id="logoutBtn"
+            class="bg-red-950/40 border border-red-900 text-red-400 text-xs uppercase tracking-wider px-4 py-2.5 rounded-sm hover:bg-red-900 hover:text-white transition"
+          >
+            Logout
+          </button>
+        
+        <!-- MOBILE HAMBURGER BUTTON -->
+        <div class="lg:hidden flex items-center space-x-4">
+          <a href="tel:+919211167673" class="sm:hidden text-theme-gold text-xl p-1 transition-transform active:scale-95">📞</a>
+          <button id="menu-btn" class="p-1 text-theme-gold focus:outline-none transition-transform active:scale-90" aria-label="Toggle Menu">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+          </button>
+        </div>
+</div>
+      
+      <!-- MOBILE DROPDOWN MENU -->
+      <div
+        id="mobile-menu"
+        class="hidden lg:hidden absolute top-24 left-0 w-full bg-[#0a0a0a] border-b border-zinc-900/80 px-4 md:px-6 py-8 space-y-6 text-sm uppercase tracking-widest  z-[100] shadow-2xl"
+      >
+        <a href="index.html" class="block text-zinc-400 hover:text-theme-gold premium-transition">Home</a>
+        <a href="about.html" class="block text-zinc-400 hover:text-theme-gold premium-transition">About</a>
+        <a href="service.html" class="block text-zinc-400 hover:text-theme-gold premium-transition">Services</a>
+        <a href="gallery.html" class="block text-zinc-400 hover:text-theme-gold premium-transition">Gallery</a>
+        <a href="pricing.html" class="block text-zinc-400 hover:text-theme-gold premium-transition">Pricing</a>
+        <a href="index.html#booking" class="block text-zinc-400 hover:text-theme-gold premium-transition">Book Appointment</a>
+        <a href="contact.html" class="block text-zinc-400 hover:text-theme-gold premium-transition">Contact</a>
+        <div class="pt-6 border-t border-zinc-900/80 flex flex-col space-y-4">
+          <a href="tel:+919211167673" class="text-zinc-300 text-sm font-semibold flex items-center space-x-2">
+            <span class="text-theme-gold animate-pulse">📞</span> <span>+91 9211167673</span>
+          </a>
+          <a href="index.html#booking" class="bg-theme-gold text-black font-bold text-center uppercase text-xs tracking-widest py-4 rounded-sm shadow-[0_0_15px_rgba(212,175,55,0.2)]">
+            Book Now
+          </a>
+        </div>
+      </div>
+</header>
+      <!-- Stats Counters Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+        <div class="bg-zinc-950 border border-zinc-800 p-6 rounded-sm">
+          <p class="text-xs text-zinc-500 uppercase tracking-widest">
+            Total Reservations
+          </p>
+          <p id="statTotal" class="text-3xl font-bold text-gold mt-2">0</p>
+        </div>
+        <div class="bg-zinc-950 border border-zinc-800 p-6 rounded-sm">
+          <p class="text-xs text-zinc-500 uppercase tracking-widest">
+            Today's Load
+          </p>
+          <p id="statToday" class="text-3xl font-bold text-white mt-2">0</p>
+        </div>
+        <div class="bg-zinc-950 border border-zinc-800 p-6 rounded-sm">
+          <p class="text-xs text-zinc-500 uppercase tracking-widest">
+            Active System Sockets
+          </p>
+          <p class="text-3xl font-bold text-green-400 mt-2">1 Connected</p>
+        </div>
+      </div>
+      <!-- Main Data Table Container -->
+      <div
+        class="bg-zinc-950 border border-zinc-800 rounded-sm overflow-hidden shadow-2xl"
+      >
+        <div
+          class="p-5 border-b border-zinc-900 bg-zinc-900/50 flex justify-between items-center"
+        >
+          <h2
+            data-aos="fade-up"
+            data-aos-duration="800"
+            class="text-sm font-premium text-gold uppercase tracking-wider"
+          >
+            Appointment Logs Ledger
+          </h2>
+          <span id="tableStatus" class="text-xs text-zinc-400"
+            >Loading live streams...</span
+          >
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr
+                class="border-b border-zinc-800 text-zinc-500 text-xs uppercase tracking-wider bg-zinc-950"
+              >
+                <th class="p-4 font-medium">Client</th>
+                <th class="p-4 font-medium">Contact Details</th>
+                <th class="p-4 font-medium">Service Requested</th>
+                <th class="p-4 font-medium">Execution Date</th>
+                <th class="p-4 font-medium">Time Slot</th>
+                <th class="p-4 font-medium text-right">Database State</th>
+              </tr>
+            </thead>
+            <tbody id="adminTableBody" class="text-sm divide-y divide-zinc-900">
+              <!-- Dynamic Table Rows Will Be Injected Here -->
+            </tbody>
+          </table>
+        </div>
+        <!-- Empty State View -->
+        <div id="emptyState" class="p-10 text-center text-zinc-600 hidden">
+          No active booking logs found for the selected query parameter filters.
+        </div>
+      </div>
+    </div>
+    <!-- Script Initializers Linking Chain -->
+    <script src="config.js"></script>
+    <script src="admin.js"></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const scrollToTopBtn = document.getElementById("scrollToTopBtn");
+        if (scrollToTopBtn) {
+          window.addEventListener("scroll", () => {
+            if (window.scrollY > 300) {
+              scrollToTopBtn.style.display = "flex";
+            } else {
+              scrollToTopBtn.style.display = "none";
+            }
+          });
+          scrollToTopBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+
+            const duration = 3000; // 3 seconds for a very slow, premium glide // 1.2 seconds for a slow, premium glide
+            const startPosition = window.pageYOffset;
+            let startTime = null;
+
+            function easeInOutCubic(t, b, c, d) {
+              t /= d / 2;
+              if (t < 1) return (c / 2) * t * t * t + b;
+              t -= 2;
+              return (c / 2) * (t * t * t + 2) + b;
+            }
+
+            function animation(currentTime) {
+              if (startTime === null) startTime = currentTime;
+              const timeElapsed = currentTime - startTime;
+              const run = easeInOutCubic(
+                timeElapsed,
+                startPosition,
+                -startPosition,
+                duration,
+              );
+
+              window.scrollTo(0, run);
+
+              if (timeElapsed < duration) {
+                requestAnimationFrame(animation);
+              } else {
+                window.scrollTo(0, 0);
+              }
+            }
+
+            requestAnimationFrame(animation);
+          });
+        }
+      });
+    </script>
+  
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        const menuBtn = document.getElementById("menu-btn");
+        const mobileMenu = document.getElementById("mobile-menu");
+        if (menuBtn && mobileMenu) {
+          menuBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            mobileMenu.classList.toggle("hidden");
+            // Optional: prevent background scrolling
+            document.body.classList.toggle("overflow-hidden");
+          });
+        }
+      });
+    </script>
+</body>
+</html>
