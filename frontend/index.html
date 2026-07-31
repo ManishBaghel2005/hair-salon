@@ -1558,6 +1558,24 @@
             });
             const data = await response.json();
             if (data.success) {
+              // 🎊 Trigger Confetti Animation
+              if (typeof confetti === 'function') {
+                confetti({
+                  particleCount: 150,
+                  spread: 80,
+                  origin: { y: 0.6 },
+                  colors: ['#cca054', '#ffffff', '#d4af37', '#eab308']
+                });
+                setTimeout(() => {
+                  confetti({
+                    particleCount: 100,
+                    spread: 120,
+                    origin: { y: 0.6 },
+                    colors: ['#cca054', '#ffffff', '#d4af37', '#eab308']
+                  });
+                }, 400);
+              }
+
               // Show Success Modal
               const modal = document.getElementById("success-modal");
               const modalBox = modal.querySelector(".transform");
