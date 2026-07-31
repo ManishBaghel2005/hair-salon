@@ -32,7 +32,36 @@ document.addEventListener("DOMContentLoaded", () => {
     localStorage.removeItem('adminToken'); // Token clear from memory
     window.location.href = 'login.html';   // Redirect to login terminal
   });
+
+  // Setup Quick Filter Buttons
+  ['Today', 'Upcoming', 'Previous'].forEach(type => {
+    const btn = document.getElementById(`filter${type}Btn`);
+    if (btn) {
+      btn.addEventListener('click', () => {
+        window.activeQuickFilter = window.activeQuickFilter === type.toLowerCase() ? null : type.toLowerCase();
+        updateFilterButtonUI();
+        applyFilters(document.getElementById('filterDate').value);
+      });
+    }
+  });
 });
+
+function updateFilterButtonUI() {
+  ['Today', 'Upcoming', 'Previous'].forEach(type => {
+    const btn = document.getElementById(`filter${type}Btn`);
+    if (btn) {
+      if (window.activeQuickFilter === type.toLowerCase()) {
+        btn.classList.add('border-theme-gold');
+        btn.classList.remove('border-zinc-800');
+        btn.querySelector('p').classList.add('text-theme-gold');
+      } else {
+        btn.classList.remove('border-theme-gold');
+        btn.classList.add('border-zinc-800');
+        btn.querySelector('p').classList.remove('text-theme-gold');
+      }
+    }
+  });
+}
 
 // 🌐 Rest API Pipeline to pull down historical ledger logs
 async function fetchAllAppointments() {
@@ -73,7 +102,21 @@ function applyFilters(dateFilterValue) {
   let filteredList = allAppointments;
 
   if (dateFilterValue) {
-    filteredList = allAppointments.filter(app => app.date === dateFilterValue);
+    filteredList = filteredList.filter(app => app.date === dateFilterValue);
+  }
+
+  // Apply Quick Filters
+  if (window.activeQuickFilter) {
+    const d = new Date();
+    const todayStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    
+    if (window.activeQuickFilter === 'today') {
+      filteredList = filteredList.filter(app => app.date === todayStr);
+    } else if (window.activeQuickFilter === 'upcoming') {
+      filteredList = filteredList.filter(app => app.date > todayStr);
+    } else if (window.activeQuickFilter === 'previous') {
+      filteredList = filteredList.filter(app => app.date < todayStr);
+    }
   }
 
   // Sort list logically by Date and Time Slot
@@ -118,14 +161,30 @@ function renderTableRows(dataList) {
 
 // 📊 Live Matrix Calculator Engines
 function calculateMetrics(masterList) {
-  document.getElementById('statTotal').innerText = masterList.length;
-
-  // ✅ Safe Local Timezone String (YYYY-MM-DD)
   const d = new Date();
   const todayStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
   
-  const todaysCount = masterList.filter(app => app.date === todayStr).length;
-  document.getElementById('statToday').innerText = todaysCount;
+  let todayCount = 0;
+  let upcomingCount = 0;
+  let previousCount = 0;
+
+  masterList.forEach(app => {
+    if (app.date === todayStr) {
+      todayCount++;
+    } else if (app.date > todayStr) {
+      upcomingCount++;
+    } else {
+      previousCount++;
+    }
+  });
+
+  const elToday = document.getElementById('statToday');
+  const elUpcoming = document.getElementById('statUpcoming');
+  const elPrevious = document.getElementById('statPrevious');
+
+  if (elToday) elToday.innerText = todayCount;
+  if (elUpcoming) elUpcoming.innerText = upcomingCount;
+  if (elPrevious) elPrevious.innerText = previousCount;
 }
 
 // 📡 Real-time Node WebSocket Handler pipeline interceptor
