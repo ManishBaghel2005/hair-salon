@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // Setup Quick Filter Buttons
-  ['Today', 'Upcoming', 'Previous'].forEach(type => {
+  ['Total', 'Today', 'Upcoming', 'Previous'].forEach(type => {
     const btn = document.getElementById(`filter${type}Btn`);
     if (btn) {
       btn.addEventListener('click', () => {
@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function updateFilterButtonUI() {
-  ['Today', 'Upcoming', 'Previous'].forEach(type => {
+  ['Total', 'Today', 'Upcoming', 'Previous'].forEach(type => {
     const btn = document.getElementById(`filter${type}Btn`);
     if (btn) {
       if (window.activeQuickFilter === type.toLowerCase()) {
@@ -61,6 +61,38 @@ function updateFilterButtonUI() {
       }
     }
   });
+}
+
+function parseAppDates(app) {
+  const dateParts = app.date.split('-');
+  const y = parseInt(dateParts[0], 10);
+  const m = parseInt(dateParts[1], 10) - 1;
+  const d = parseInt(dateParts[2], 10);
+
+  let startH = 0, startM = 0;
+  let endH = 0, endM = 0;
+  
+  if (app.timeSlot) {
+    const parts = app.timeSlot.split('-');
+    const parseTime = (str) => {
+      const p = str.trim().split(' ');
+      if(p.length !== 2) return [0,0];
+      let [h, min] = p[0].split(':').map(Number);
+      if (p[1].toUpperCase() === 'PM' && h !== 12) h += 12;
+      if (p[1].toUpperCase() === 'AM' && h === 12) h = 0;
+      return [h, min];
+    };
+    [startH, startM] = parseTime(parts[0]);
+    if(parts.length > 1) {
+      [endH, endM] = parseTime(parts[1]);
+    } else {
+      endH = startH; endM = startM;
+    }
+  }
+  return {
+    start: new Date(y, m, d, startH, startM),
+    end: new Date(y, m, d, endH, endM)
+  };
 }
 
 // 🌐 Rest API Pipeline to pull down historical ledger logs
@@ -105,22 +137,30 @@ function applyFilters(dateFilterValue) {
     filteredList = filteredList.filter(app => app.date === dateFilterValue);
   }
 
+  const now = new Date();
+  const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+
   // Apply Quick Filters
-  if (window.activeQuickFilter) {
-    const d = new Date();
-    const todayStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-    
-    if (window.activeQuickFilter === 'today') {
-      filteredList = filteredList.filter(app => app.date === todayStr);
-    } else if (window.activeQuickFilter === 'upcoming') {
-      filteredList = filteredList.filter(app => app.date > todayStr);
-    } else if (window.activeQuickFilter === 'previous') {
-      filteredList = filteredList.filter(app => app.date < todayStr);
-    }
+  if (window.activeQuickFilter && window.activeQuickFilter !== 'total') {
+    filteredList = filteredList.filter(app => {
+      const dates = parseAppDates(app);
+      if (window.activeQuickFilter === 'previous') {
+        return dates.end < now;
+      } else if (window.activeQuickFilter === 'today') {
+        return dates.end >= now && app.date === todayStr;
+      } else if (window.activeQuickFilter === 'upcoming') {
+        return dates.end >= now && app.date > todayStr;
+      }
+      return true;
+    });
   }
 
-  // Sort list logically by Date and Time Slot
-  filteredList.sort((a, b) => new Date(a.date) - new Date(b.date));
+  // Sort list logically by closest time difference to NOW
+  filteredList.sort((a, b) => {
+    const datesA = parseAppDates(a);
+    const datesB = parseAppDates(b);
+    return Math.abs(datesA.start - now) - Math.abs(datesB.start - now);
+  });
 
   renderTableRows(filteredList);
   calculateMetrics(allAppointments);
@@ -161,27 +201,31 @@ function renderTableRows(dataList) {
 
 // 📊 Live Matrix Calculator Engines
 function calculateMetrics(masterList) {
-  const d = new Date();
-  const todayStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  const now = new Date();
+  const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
   
+  let totalCount = masterList.length;
   let todayCount = 0;
   let upcomingCount = 0;
   let previousCount = 0;
 
   masterList.forEach(app => {
-    if (app.date === todayStr) {
+    const dates = parseAppDates(app);
+    if (dates.end < now) {
+      previousCount++;
+    } else if (app.date === todayStr) {
       todayCount++;
     } else if (app.date > todayStr) {
       upcomingCount++;
-    } else {
-      previousCount++;
     }
   });
 
+  const elTotal = document.getElementById('statTotal');
   const elToday = document.getElementById('statToday');
   const elUpcoming = document.getElementById('statUpcoming');
   const elPrevious = document.getElementById('statPrevious');
 
+  if (elTotal) elTotal.innerText = totalCount;
   if (elToday) elToday.innerText = todayCount;
   if (elUpcoming) elUpcoming.innerText = upcomingCount;
   if (elPrevious) elPrevious.innerText = previousCount;
