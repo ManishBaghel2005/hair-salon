@@ -103,7 +103,7 @@ function renderTableRows(dataList) {
     row.innerHTML = `
       <td class="p-4 font-bold text-white">${app.name}</td>
       <td class="p-4">
-        <div class="text-zinc-300">${app.email}</div>
+        <div class="text-zinc-300">${app.email || 'No Email'}</div>
         <div class="text-xs text-zinc-500">${app.phone}</div>
       </td>
       <td class="p-4"><span class="border border-zinc-800 bg-zinc-900 px-2 py-1 rounded text-xs text-gold">${app.service}</span></td>
