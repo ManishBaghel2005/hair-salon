@@ -1518,7 +1518,8 @@
           submitBtn.innerText = "Booking...";
           submitBtn.disabled = true;
           try {
-            const API_URL = "http://localhost:8080/api/appointments/book";
+            // Use CONFIG for API URL to support both local and production
+            const API_URL = window.CONFIG ? window.CONFIG.BOOK_NOW_URL : "http://localhost:8080/api/appointments/book";
             
             // Add a 3-second timeout to prevent long hangs if backend is down
             const controller = new AbortController();
