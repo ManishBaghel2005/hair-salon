@@ -1396,14 +1396,27 @@
             startHour = 9;
             endHour = 21; // Last booking at 09:00 PM for 10:00 PM close
           }
+          const now = new Date();
+          const isToday = 
+            dateObj.getFullYear() === now.getFullYear() &&
+            dateObj.getMonth() === now.getMonth() &&
+            dateObj.getDate() === now.getDate();
+
           const dynamicTimeslots = [];
           for (let h = startHour; h <= endHour; h++) {
+            // Skip timeslots that have already passed today
+            if (isToday && h <= now.getHours()) continue;
+
             let ampm = h >= 12 ? "PM" : "AM";
             let displayHour = h > 12 ? h - 12 : h;
             displayHour = String(displayHour).padStart(2, "0");
             dynamicTimeslots.push(`${displayHour}:00 ${ampm}`);
           }
+          
           timeslotsGrid.innerHTML = "";
+          if (dynamicTimeslots.length === 0) {
+            timeslotsGrid.innerHTML = "<p class='text-zinc-500 text-sm text-center' style='grid-column: 1 / -1;'>No slots available for today. Please select another date.</p>";
+          }
           dynamicTimeslots.forEach((time, index) => {
             const slotDiv = document.createElement("div");
             slotDiv.innerText = time;
