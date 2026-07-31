@@ -18,13 +18,20 @@ document.addEventListener("DOMContentLoaded", () => {
   fetchAllAppointments();
 
   // Attach Event Listeners for Filters
-  document.getElementById('filterDate').addEventListener('change', (e) => {
-    applyFilters(e.target.value);
+  document.getElementById('filterDate').addEventListener('change', () => {
+    applyFilters();
+  });
+
+  document.getElementById('searchInput').addEventListener('input', () => {
+    applyFilters();
   });
 
   document.getElementById('clearFilter').addEventListener('click', () => {
     document.getElementById('filterDate').value = "";
-    applyFilters("");
+    document.getElementById('searchInput').value = "";
+    window.activeQuickFilter = null;
+    updateFilterButtonUI();
+    applyFilters();
   });
 
   // 🚪 ✅ ADDED: Logout Click Event Handler Linker
@@ -40,7 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
       btn.addEventListener('click', () => {
         window.activeQuickFilter = window.activeQuickFilter === type.toLowerCase() ? null : type.toLowerCase();
         updateFilterButtonUI();
-        applyFilters(document.getElementById('filterDate').value);
+        applyFilters();
       });
     }
   });
@@ -122,7 +129,7 @@ async function fetchAllAppointments() {
     allAppointments = resData.data || resData.appointments || resData || [];
     
     tableStatus.innerText = "System Sync Synchronized";
-    applyFilters(""); 
+    applyFilters(); 
   } catch (error) {
     console.error("Failed fetching ledger data:", error);
     tableStatus.innerText = "Connection Dropped";
@@ -130,11 +137,23 @@ async function fetchAllAppointments() {
 }
 
 // 🎛️ Dynamic Memory Filter Logic Engine
-function applyFilters(dateFilterValue) {
+function applyFilters() {
   let filteredList = allAppointments;
+
+  const dateFilterValue = document.getElementById('filterDate').value;
+  const searchFilterValue = document.getElementById('searchInput').value.toLowerCase();
 
   if (dateFilterValue) {
     filteredList = filteredList.filter(app => app.date === dateFilterValue);
+  }
+
+  if (searchFilterValue) {
+    filteredList = filteredList.filter(app => {
+      const name = (app.name || "").toLowerCase();
+      const phone = (app.phone || "").toLowerCase();
+      const email = (app.email || "").toLowerCase();
+      return name.includes(searchFilterValue) || phone.includes(searchFilterValue) || email.includes(searchFilterValue);
+    });
   }
 
   const now = new Date();
