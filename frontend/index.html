@@ -1065,7 +1065,7 @@
               type="text"
               id="name-input"
               placeholder="Your full name"
-              class="w-full bg-black border border-zinc-800 text-white p-3.5 text-xs rounded-sm outline-none transform premium-transition placeholder-zinc-700 hover:border-zinc-700 hover:bg-zinc-900/30 focus:border-theme-gold focus:bg-zinc-900 focus:scale-[1.02]"
+              class="w-full bg-black border border-zinc-800 text-white p-3.5 text-xs rounded-sm outline-none transform premium-transition placeholder-zinc-700 hover:border-zinc-700 focus:border-theme-gold [&:not(:placeholder-shown)]:border-theme-gold"
             />
           </div>
           <!-- Field 3: Phone -->
@@ -1074,7 +1074,7 @@
               class="text-zinc-500 text-xs uppercase tracking-widest font-semibold block mb-2 transition-colors duration-300 group-focus-within:text-theme-gold group-hover:text-zinc-300"
               >Phone Number <span class="text-theme-gold">*</span></label
             >
-            <div class="flex items-center w-full bg-black border border-zinc-800 text-white p-3.5 text-xs rounded-sm transform premium-transition hover:border-zinc-700 hover:bg-zinc-900/30 focus-within:border-theme-gold focus-within:bg-zinc-900 focus-within:scale-[1.02]">
+            <div class="flex items-center w-full bg-black border border-zinc-800 text-white p-3.5 text-xs rounded-sm transform premium-transition hover:border-zinc-700 focus-within:border-theme-gold has-[:not(:placeholder-shown)]:border-theme-gold">
               <span class="text-zinc-400 mr-2 font-medium">+91</span>
               <input
                 type="tel"
@@ -1097,7 +1097,7 @@
             >
             <select
               id="service-input"
-              class="w-full bg-black border border-zinc-800 text-zinc-400 p-3.5 text-xs rounded-sm outline-none transform premium-transition hover:border-zinc-700 hover:bg-zinc-900/30 focus:border-theme-gold focus:text-white focus:bg-zinc-900 focus:scale-[1.02]"
+              class="w-full bg-black border border-zinc-800 text-zinc-400 p-3.5 text-xs rounded-sm outline-none transform premium-transition hover:border-zinc-700 focus:border-theme-gold focus:text-white"
             >
               <option>Select a service</option>
               <option>Gentlemen's Grooming Combo</option>
@@ -1132,9 +1132,10 @@
               >Anything you'd like us to know?</label
             >
             <textarea
+              id="notes-input"
               rows="3"
               placeholder="E.g. I have sensitive skin, or looking for a completely new look..."
-              class="w-full bg-black border border-zinc-800 text-white p-3.5 text-xs rounded-sm outline-none transform premium-transition placeholder-zinc-700 hover:border-zinc-700 hover:bg-zinc-900/30 focus:border-theme-gold focus:bg-zinc-900 focus:scale-[1.01] resize-none"
+              class="w-full bg-black border border-zinc-800 text-white p-3.5 text-xs rounded-sm outline-none transform premium-transition placeholder-zinc-700 hover:border-zinc-700 focus:border-theme-gold [&:not(:placeholder-shown)]:border-theme-gold resize-none"
             ></textarea>
           </div>
           <!-- Button -->
