@@ -155,11 +155,18 @@ function applyFilters(dateFilterValue) {
     });
   }
 
-  // Sort list logically by closest time difference to NOW
+  // Sort list logically
   filteredList.sort((a, b) => {
     const datesA = parseAppDates(a);
     const datesB = parseAppDates(b);
-    return Math.abs(datesA.start - now) - Math.abs(datesB.start - now);
+    
+    if (window.activeQuickFilter === 'previous') {
+      return datesB.start - datesA.start; // Descending (Closest past first)
+    } else if (window.activeQuickFilter === 'upcoming' || window.activeQuickFilter === 'today') {
+      return datesA.start - datesB.start; // Ascending (Closest future first)
+    } else {
+      return datesB.start - datesA.start; // Total: Descending by default
+    }
   });
 
   renderTableRows(filteredList);
@@ -179,7 +186,24 @@ function renderTableRows(dataList) {
   }
   emptyState.classList.add('hidden');
 
+  let currentMonthStr = "";
+
   dataList.forEach(app => {
+    // Generate Month Header
+    if (app.date) {
+      const dateParts = app.date.split('-');
+      const d = new Date(dateParts[0], parseInt(dateParts[1]) - 1, dateParts[2]);
+      const monthStr = d.toLocaleString('default', { month: 'long', year: 'numeric' });
+      
+      if (monthStr !== currentMonthStr) {
+        currentMonthStr = monthStr;
+        const monthRow = document.createElement('tr');
+        monthRow.className = "bg-zinc-950 border-b border-theme-gold/20";
+        monthRow.innerHTML = `<td colspan="6" class="p-3 text-center text-theme-gold font-bold uppercase tracking-widest text-xs">${monthStr}</td>`;
+        tbody.appendChild(monthRow);
+      }
+    }
+
     const row = document.createElement('tr');
     row.className = "hover:bg-zinc-900/40 transition duration-150 border-b border-zinc-900";
     
