@@ -1,5 +1,6 @@
 import Appointment from '../models/appointment.modles.js';
 import dotenv from 'dotenv';
+import twilio from 'twilio'; // Import Twilio
 dotenv.config(); // .env file se environment variables load karne ke liye
 
 // 1. Check Availability, Book Appointment & Send Email
@@ -16,6 +17,36 @@ export const bookAppointment = async (req, res) => {
     // Save appointment to Database
     const newAppointment = new Appointment({ name, phone, date, timeSlot, service });
     await newAppointment.save();
+
+    // 📩 Send WhatsApp/SMS Notification via Twilio
+    try {
+      if (process.env.TWILIO_ACCOUNT_SID && process.env.TWILIO_AUTH_TOKEN && process.env.TWILIO_PHONE_NUMBER) {
+        const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
+        
+        // Ensure phone has +91 prefix
+        let formattedPhone = phone;
+        if (!formattedPhone.startsWith('+91')) {
+          formattedPhone = '+91' + phone;
+        }
+
+        const messageBody = `Hello ${name},\nYour booking at Hair Magician Unisex Salon is confirmed! 🎉\n\n📅 Date: ${date}\n⏰ Time: ${timeSlot}\n✂️ Service: ${service}\n\nThank you for choosing us!`;
+
+        // Check if using WhatsApp Sandbox or normal SMS
+        const fromNumber = process.env.TWILIO_PHONE_NUMBER;
+        const isWhatsApp = fromNumber.startsWith('whatsapp:');
+        const toNumber = isWhatsApp ? `whatsapp:${formattedPhone}` : formattedPhone;
+
+        await client.messages.create({
+          body: messageBody,
+          from: fromNumber,
+          to: toNumber
+        });
+        console.log("Notification message sent successfully to", toNumber);
+      }
+    } catch (twErr) {
+      console.error("Twilio error (SMS/WhatsApp failed):", twErr);
+      // Note: We don't throw error here because booking is already successful in DB.
+    }
 
     // Socket.io real-time alert (Dashboard update ke liye)
     const io = req.app.get('socketio');

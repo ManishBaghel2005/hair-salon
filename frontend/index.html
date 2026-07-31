@@ -1074,13 +1074,20 @@
               class="text-zinc-500 text-xs uppercase tracking-widest font-semibold block mb-2 transition-colors duration-300 group-focus-within:text-theme-gold group-hover:text-zinc-300"
               >Phone Number <span class="text-theme-gold">*</span></label
             >
-            <input
-              type="tel"
-              id="phone-input"
-              placeholder="+91 XXXXX XXXXX"
-              class="w-full bg-black border border-zinc-800 text-white p-3.5 text-xs rounded-sm outline-none transform premium-transition placeholder-zinc-700 hover:border-zinc-700 hover:bg-zinc-900/30 focus:border-theme-gold focus:bg-zinc-900 focus:scale-[1.02]"
-              required
-            />
+            <div class="flex items-center w-full bg-black border border-zinc-800 text-white p-3.5 text-xs rounded-sm transform premium-transition hover:border-zinc-700 hover:bg-zinc-900/30 focus-within:border-theme-gold focus-within:bg-zinc-900 focus-within:scale-[1.02]">
+              <span class="text-zinc-400 mr-2 font-medium">+91</span>
+              <input
+                type="tel"
+                id="phone-input"
+                placeholder="10-digit mobile number"
+                class="w-full bg-transparent outline-none placeholder-zinc-700 text-white"
+                required
+                pattern="[0-9]{10}"
+                maxlength="10"
+                minlength="10"
+                oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+              />
+            </div>
           </div>
           <!-- Field 4: Service -->
           <div class="group">
@@ -1492,6 +1499,10 @@
           const formattedDate = `${year}-${month}-${day}`;
           if (!name || !phone || service === "Select a service") {
             alert("Please fill all required fields.");
+            return;
+          }
+          if (phone.length !== 10) {
+            alert("Please enter a valid 10-digit mobile number.");
             return;
           }
           // Format the time slot string to match the backend expectation (e.g., "10:00 AM - 11:00 AM")
