@@ -18,6 +18,17 @@ document.addEventListener("DOMContentLoaded", () => {
   fetchAllAppointments();
 
   // Attach Event Listeners for Filters
+  
+  if (window.flatpickr) {
+    flatpickr("#filterDate", {
+      dateFormat: "d/m/Y",
+      allowInput: true,
+      onChange: function() {
+        applyFilters();
+      }
+    });
+  }
+
   document.getElementById('filterDate').addEventListener('change', () => {
     applyFilters();
   });
@@ -27,7 +38,10 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   document.getElementById('clearFilter').addEventListener('click', () => {
-    document.getElementById('filterDate').value = "";
+    const fp = document.getElementById('filterDate')._flatpickr;
+    if (fp) fp.clear();
+    else document.getElementById('filterDate').value = "";
+    
     document.getElementById('searchInput').value = "";
     window.activeQuickFilter = null;
     updateFilterButtonUI();
@@ -140,7 +154,15 @@ async function fetchAllAppointments() {
 function applyFilters() {
   let filteredList = allAppointments;
 
-  const dateFilterValue = document.getElementById('filterDate').value;
+  const rawDateVal = document.getElementById('filterDate').value; // "DD/MM/YYYY"
+  let dateFilterValue = "";
+  if (rawDateVal && rawDateVal.includes('/')) {
+    const parts = rawDateVal.split('/');
+    if (parts.length === 3) {
+      dateFilterValue = `${parts[2]}-${parts[1]}-${parts[0]}`; // Convert to "YYYY-MM-DD"
+    }
+  }
+
   const searchFilterValue = document.getElementById('searchInput').value.toLowerCase();
 
   if (dateFilterValue) {
